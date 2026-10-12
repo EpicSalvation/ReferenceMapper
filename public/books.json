@@ -1,0 +1,922 @@
+{
+ "books": [
+  {
+   "code": "Gen",
+   "name": "Genesis",
+   "abbr": "Gen",
+   "group": "Law",
+   "aliases": [
+    "gen",
+    "genesis",
+    "ge",
+    "gn"
+   ],
+   "chapters": [31,25,24,26,32,22,24,22,29,32,32,20,18,24,21,16,27,33,38,18,34,24,20,67,34,35,46,22,35,43,55,32,20,31,29,43,36,30,23,23,57,38,34,34,28,34,31,22,33,26]
+  },
+  {
+   "code": "Exod",
+   "name": "Exodus",
+   "abbr": "Exod",
+   "group": "Law",
+   "aliases": [
+    "exod",
+    "exodus",
+    "ex",
+    "exo",
+    "exd"
+   ],
+   "chapters": [22,25,22,31,23,30,25,32,35,29,10,51,22,31,27,36,16,27,25,26,36,31,33,18,40,37,21,43,46,38,18,35,23,35,35,38,29,31,43,38]
+  },
+  {
+   "code": "Lev",
+   "name": "Leviticus",
+   "abbr": "Lev",
+   "group": "Law",
+   "aliases": [
+    "lev",
+    "leviticus",
+    "le",
+    "lv",
+    "levi"
+   ],
+   "chapters": [17,16,17,35,19,30,38,36,24,20,47,8,59,57,33,34,16,30,37,27,24,33,44,23,55,46,34]
+  },
+  {
+   "code": "Num",
+   "name": "Numbers",
+   "abbr": "Num",
+   "group": "Law",
+   "aliases": [
+    "num",
+    "numbers",
+    "nu",
+    "nm",
+    "nb",
+    "numb"
+   ],
+   "chapters": [54,34,51,49,31,27,89,26,23,36,35,16,33,45,41,50,13,32,22,29,35,41,30,25,18,65,23,31,40,16,54,42,56,29,34,13]
+  },
+  {
+   "code": "Deut",
+   "name": "Deuteronomy",
+   "abbr": "Deut",
+   "group": "Law",
+   "aliases": [
+    "deut",
+    "deuteronomy",
+    "dt",
+    "de",
+    "deu"
+   ],
+   "chapters": [46,37,29,49,33,25,26,20,29,22,32,32,18,29,23,22,20,22,21,20,23,30,25,22,19,19,26,68,29,20,30,52,29,12]
+  },
+  {
+   "code": "Josh",
+   "name": "Joshua",
+   "abbr": "Josh",
+   "group": "History",
+   "aliases": [
+    "josh",
+    "joshua",
+    "jos",
+    "jsh"
+   ],
+   "chapters": [18,24,17,24,15,27,26,35,27,43,23,24,33,15,63,10,18,28,51,9,45,34,16,33]
+  },
+  {
+   "code": "Judg",
+   "name": "Judges",
+   "abbr": "Judg",
+   "group": "History",
+   "aliases": [
+    "judg",
+    "judges",
+    "jdg",
+    "jg",
+    "jdgs"
+   ],
+   "chapters": [36,23,31,24,31,40,25,35,57,18,40,15,25,20,20,31,13,31,30,48,25]
+  },
+  {
+   "code": "Ruth",
+   "name": "Ruth",
+   "abbr": "Ruth",
+   "group": "History",
+   "aliases": [
+    "ruth",
+    "ru",
+    "rth"
+   ],
+   "chapters": [22,23,18,22]
+  },
+  {
+   "code": "1Sam",
+   "name": "1 Samuel",
+   "abbr": "1Sam",
+   "group": "History",
+   "aliases": [
+    "1sam",
+    "1samuel",
+    "1sa",
+    "1sm",
+    "1s",
+    "isam",
+    "firstsamuel"
+   ],
+   "chapters": [28,36,21,22,12,21,17,22,27,27,15,25,23,52,35,23,58,30,24,42,15,23,29,22,44,25,12,25,11,31,13]
+  },
+  {
+   "code": "2Sam",
+   "name": "2 Samuel",
+   "abbr": "2Sam",
+   "group": "History",
+   "aliases": [
+    "2sam",
+    "2samuel",
+    "2sa",
+    "2sm",
+    "2s",
+    "iisam",
+    "secondsamuel"
+   ],
+   "chapters": [27,32,39,12,25,23,29,18,13,19,27,31,39,33,37,23,29,33,43,26,22,51,39,25]
+  },
+  {
+   "code": "1Kgs",
+   "name": "1 Kings",
+   "abbr": "1Kgs",
+   "group": "History",
+   "aliases": [
+    "1kgs",
+    "1kings",
+    "1ki",
+    "1kg",
+    "1k",
+    "1kin",
+    "iking",
+    "firstkings"
+   ],
+   "chapters": [53,46,28,34,18,38,51,66,28,29,43,33,34,31,34,34,24,46,21,43,29,53]
+  },
+  {
+   "code": "2Kgs",
+   "name": "2 Kings",
+   "abbr": "2Kgs",
+   "group": "History",
+   "aliases": [
+    "2kgs",
+    "2kings",
+    "2ki",
+    "2kg",
+    "2k",
+    "2kin",
+    "iiking",
+    "secondkings"
+   ],
+   "chapters": [18,25,27,44,27,33,20,29,37,36,21,21,25,29,38,20,41,37,37,21,26,20,37,20,30]
+  },
+  {
+   "code": "1Chr",
+   "name": "1 Chronicles",
+   "abbr": "1Chr",
+   "group": "History",
+   "aliases": [
+    "1chr",
+    "1chronicles",
+    "1ch",
+    "1chron",
+    "ichron",
+    "firstchronicles"
+   ],
+   "chapters": [54,55,24,43,26,81,40,40,44,14,47,40,14,17,29,43,27,17,19,8,30,19,32,31,31,32,34,21,30]
+  },
+  {
+   "code": "2Chr",
+   "name": "2 Chronicles",
+   "abbr": "2Chr",
+   "group": "History",
+   "aliases": [
+    "2chr",
+    "2chronicles",
+    "2ch",
+    "2chron",
+    "iichron",
+    "secondchronicles"
+   ],
+   "chapters": [17,18,17,22,14,42,22,18,31,19,23,16,22,15,19,14,19,34,11,37,20,12,21,27,28,23,9,27,36,27,21,33,25,33,27,23]
+  },
+  {
+   "code": "Ezra",
+   "name": "Ezra",
+   "abbr": "Ezra",
+   "group": "History",
+   "aliases": [
+    "ezra",
+    "ezr"
+   ],
+   "chapters": [11,70,13,24,17,22,28,36,15,44]
+  },
+  {
+   "code": "Neh",
+   "name": "Nehemiah",
+   "abbr": "Neh",
+   "group": "History",
+   "aliases": [
+    "neh",
+    "nehemiah",
+    "ne",
+    "nehem"
+   ],
+   "chapters": [11,20,32,23,19,19,73,18,38,39,36,47,31]
+  },
+  {
+   "code": "Esth",
+   "name": "Esther",
+   "abbr": "Esth",
+   "group": "History",
+   "aliases": [
+    "esth",
+    "esther",
+    "es",
+    "est"
+   ],
+   "chapters": [22,23,15,17,14,14,10,17,32,3]
+  },
+  {
+   "code": "Job",
+   "name": "Job",
+   "abbr": "Job",
+   "group": "Wisdom",
+   "aliases": [
+    "job",
+    "jb"
+   ],
+   "chapters": [22,13,26,21,27,30,21,22,35,22,20,25,28,22,35,22,16,21,29,29,34,30,17,25,6,14,23,28,25,31,40,22,33,37,16,33,24,41,30,24,34,17]
+  },
+  {
+   "code": "Ps",
+   "name": "Psalms",
+   "abbr": "Ps",
+   "group": "Wisdom",
+   "aliases": [
+    "ps",
+    "psalms",
+    "psalm",
+    "psa",
+    "pss",
+    "psl",
+    "pslm"
+   ],
+   "chapters": [6,12,8,8,12,10,17,9,20,18,7,8,6,7,5,11,15,50,14,9,13,31,6,10,22,12,14,9,11,12,24,11,22,22,28,12,40,22,13,17,13,11,5,26,17,11,9,14,20,23,19,9,6,7,23,13,11,11,17,12,8,12,11,10,13,20,7,35,36,5,24,20,28,23,10,12,20,72,13,19,16,8,18,12,13,17,7,18,52,17,16,15,5,23,11,13,12,9,9,5,8,28,22,35,45,48,43,13,31,7,10,10,9,8,18,19,2,29,176,7,8,9,4,8,5,6,5,6,8,8,3,18,3,3,21,26,9,8,24,13,10,7,12,15,21,10,20,14,9,6]
+  },
+  {
+   "code": "Prov",
+   "name": "Proverbs",
+   "abbr": "Prov",
+   "group": "Wisdom",
+   "aliases": [
+    "prov",
+    "proverbs",
+    "pr",
+    "prv",
+    "pro"
+   ],
+   "chapters": [33,22,35,27,23,35,27,36,18,32,31,28,25,35,33,33,28,24,29,30,31,29,35,34,28,28,27,28,27,33,31]
+  },
+  {
+   "code": "Eccl",
+   "name": "Ecclesiastes",
+   "abbr": "Eccl",
+   "group": "Wisdom",
+   "aliases": [
+    "eccl",
+    "ecclesiastes",
+    "ec",
+    "ecc",
+    "eccles",
+    "qoh"
+   ],
+   "chapters": [18,26,22,16,20,12,29,17,18,20,10,14]
+  },
+  {
+   "code": "Song",
+   "name": "Song of Solomon",
+   "abbr": "Song",
+   "group": "Wisdom",
+   "aliases": [
+    "song",
+    "songofsolomon",
+    "sos",
+    "ss",
+    "sng",
+    "songofsongs",
+    "canticles",
+    "cant",
+    "songofsol"
+   ],
+   "chapters": [17,17,11,16,16,13,13,14]
+  },
+  {
+   "code": "Isa",
+   "name": "Isaiah",
+   "abbr": "Isa",
+   "group": "Prophets",
+   "aliases": [
+    "isa",
+    "isaiah",
+    "is",
+    "isai"
+   ],
+   "chapters": [31,22,26,6,30,13,25,22,21,34,16,6,22,32,9,14,14,7,25,6,17,25,18,23,12,21,13,29,24,33,9,20,24,17,10,22,38,22,8,31,29,25,28,28,25,13,15,22,26,11,23,15,12,17,13,12,21,14,21,22,11,12,19,12,25,24]
+  },
+  {
+   "code": "Jer",
+   "name": "Jeremiah",
+   "abbr": "Jer",
+   "group": "Prophets",
+   "aliases": [
+    "jer",
+    "jeremiah",
+    "je",
+    "jr",
+    "jere"
+   ],
+   "chapters": [19,37,25,31,31,30,34,22,26,25,23,17,27,22,21,21,27,23,15,18,14,30,40,10,38,24,22,17,32,24,40,44,26,22,19,32,21,28,18,16,18,22,13,30,5,28,7,47,39,46,64,34]
+  },
+  {
+   "code": "Lam",
+   "name": "Lamentations",
+   "abbr": "Lam",
+   "group": "Prophets",
+   "aliases": [
+    "lam",
+    "lamentations",
+    "la",
+    "lamen"
+   ],
+   "chapters": [22,22,66,22,22]
+  },
+  {
+   "code": "Ezek",
+   "name": "Ezekiel",
+   "abbr": "Ezek",
+   "group": "Prophets",
+   "aliases": [
+    "ezek",
+    "ezekiel",
+    "eze",
+    "ezk"
+   ],
+   "chapters": [28,10,27,17,17,14,27,18,11,22,25,28,23,23,8,63,24,32,14,49,32,31,49,27,17,21,36,26,21,26,18,32,33,31,15,38,28,23,29,49,26,20,27,31,25,24,23,35]
+  },
+  {
+   "code": "Dan",
+   "name": "Daniel",
+   "abbr": "Dan",
+   "group": "Prophets",
+   "aliases": [
+    "dan",
+    "daniel",
+    "da",
+    "dn",
+    "dani"
+   ],
+   "chapters": [21,49,30,37,31,28,28,27,27,21,45,13]
+  },
+  {
+   "code": "Hos",
+   "name": "Hosea",
+   "abbr": "Hos",
+   "group": "Prophets",
+   "aliases": [
+    "hos",
+    "hosea",
+    "ho"
+   ],
+   "chapters": [11,23,5,19,15,11,16,14,17,15,12,14,16,9]
+  },
+  {
+   "code": "Joel",
+   "name": "Joel",
+   "abbr": "Joel",
+   "group": "Prophets",
+   "aliases": [
+    "joel",
+    "joe",
+    "jl"
+   ],
+   "chapters": [20,32,21]
+  },
+  {
+   "code": "Amos",
+   "name": "Amos",
+   "abbr": "Amos",
+   "group": "Prophets",
+   "aliases": [
+    "amos",
+    "am",
+    "amo"
+   ],
+   "chapters": [15,16,15,13,27,14,17,14,15]
+  },
+  {
+   "code": "Obad",
+   "name": "Obadiah",
+   "abbr": "Obad",
+   "group": "Prophets",
+   "aliases": [
+    "obad",
+    "obadiah",
+    "ob",
+    "oba",
+    "obd"
+   ],
+   "chapters": [21]
+  },
+  {
+   "code": "Jonah",
+   "name": "Jonah",
+   "abbr": "Jonah",
+   "group": "Prophets",
+   "aliases": [
+    "jonah",
+    "jon",
+    "jnh"
+   ],
+   "chapters": [17,10,10,11]
+  },
+  {
+   "code": "Mic",
+   "name": "Micah",
+   "abbr": "Mic",
+   "group": "Prophets",
+   "aliases": [
+    "mic",
+    "micah",
+    "mi",
+    "mica"
+   ],
+   "chapters": [16,13,12,13,15,16,20]
+  },
+  {
+   "code": "Nah",
+   "name": "Nahum",
+   "abbr": "Nah",
+   "group": "Prophets",
+   "aliases": [
+    "nah",
+    "nahum",
+    "na",
+    "nahu"
+   ],
+   "chapters": [15,13,19]
+  },
+  {
+   "code": "Hab",
+   "name": "Habakkuk",
+   "abbr": "Hab",
+   "group": "Prophets",
+   "aliases": [
+    "hab",
+    "habakkuk",
+    "hb",
+    "habak"
+   ],
+   "chapters": [17,20,19]
+  },
+  {
+   "code": "Zeph",
+   "name": "Zephaniah",
+   "abbr": "Zeph",
+   "group": "Prophets",
+   "aliases": [
+    "zeph",
+    "zephaniah",
+    "zep",
+    "zp",
+    "zephan"
+   ],
+   "chapters": [18,15,20]
+  },
+  {
+   "code": "Hag",
+   "name": "Haggai",
+   "abbr": "Hag",
+   "group": "Prophets",
+   "aliases": [
+    "hag",
+    "haggai",
+    "hg",
+    "hagg"
+   ],
+   "chapters": [15,23]
+  },
+  {
+   "code": "Zech",
+   "name": "Zechariah",
+   "abbr": "Zech",
+   "group": "Prophets",
+   "aliases": [
+    "zech",
+    "zechariah",
+    "zec",
+    "zc",
+    "zechar"
+   ],
+   "chapters": [21,13,10,14,11,15,14,23,17,12,17,14,9,21]
+  },
+  {
+   "code": "Mal",
+   "name": "Malachi",
+   "abbr": "Mal",
+   "group": "Prophets",
+   "aliases": [
+    "mal",
+    "malachi",
+    "ml",
+    "mala"
+   ],
+   "chapters": [14,17,18,6]
+  },
+  {
+   "code": "Matt",
+   "name": "Matthew",
+   "abbr": "Matt",
+   "group": "Gospels",
+   "aliases": [
+    "matt",
+    "matthew",
+    "mt",
+    "mat"
+   ],
+   "chapters": [25,23,17,25,48,34,29,34,38,42,30,50,58,36,39,28,27,35,30,34,46,46,39,51,46,75,66,20]
+  },
+  {
+   "code": "Mark",
+   "name": "Mark",
+   "abbr": "Mark",
+   "group": "Gospels",
+   "aliases": [
+    "mark",
+    "mk",
+    "mr",
+    "mrk"
+   ],
+   "chapters": [45,28,35,41,43,56,37,38,50,52,33,44,37,72,47,20]
+  },
+  {
+   "code": "Luke",
+   "name": "Luke",
+   "abbr": "Luke",
+   "group": "Gospels",
+   "aliases": [
+    "luke",
+    "lk",
+    "luk"
+   ],
+   "chapters": [80,52,38,44,39,49,50,56,62,42,54,59,35,35,32,31,37,43,48,47,38,71,56,53]
+  },
+  {
+   "code": "John",
+   "name": "John",
+   "abbr": "John",
+   "group": "Gospels",
+   "aliases": [
+    "john",
+    "jn",
+    "jhn",
+    "joh"
+   ],
+   "chapters": [51,25,36,54,47,71,53,59,41,42,57,50,38,31,27,33,26,40,42,31,25]
+  },
+  {
+   "code": "Acts",
+   "name": "Acts",
+   "abbr": "Acts",
+   "group": "Acts",
+   "aliases": [
+    "acts",
+    "ac",
+    "act",
+    "actsoftheapostles"
+   ],
+   "chapters": [26,47,26,37,42,15,60,40,43,48,30,25,52,28,41,40,34,28,41,38,40,30,35,27,27,32,44,31]
+  },
+  {
+   "code": "Rom",
+   "name": "Romans",
+   "abbr": "Rom",
+   "group": "Epistles",
+   "aliases": [
+    "rom",
+    "romans",
+    "ro",
+    "rm",
+    "roman"
+   ],
+   "chapters": [32,29,31,25,21,23,25,39,33,21,36,21,14,23,33,27]
+  },
+  {
+   "code": "1Cor",
+   "name": "1 Corinthians",
+   "abbr": "1Cor",
+   "group": "Epistles",
+   "aliases": [
+    "1cor",
+    "1corinthians",
+    "1co",
+    "1c",
+    "icor",
+    "firstcorinthians"
+   ],
+   "chapters": [31,16,23,21,13,20,40,13,27,33,34,31,13,40,58,24]
+  },
+  {
+   "code": "2Cor",
+   "name": "2 Corinthians",
+   "abbr": "2Cor",
+   "group": "Epistles",
+   "aliases": [
+    "2cor",
+    "2corinthians",
+    "2co",
+    "2c",
+    "iicor",
+    "secondcorinthians"
+   ],
+   "chapters": [24,17,18,18,21,18,16,24,15,18,33,21,14]
+  },
+  {
+   "code": "Gal",
+   "name": "Galatians",
+   "abbr": "Gal",
+   "group": "Epistles",
+   "aliases": [
+    "gal",
+    "galatians",
+    "ga",
+    "gl",
+    "galat"
+   ],
+   "chapters": [24,21,29,31,26,18]
+  },
+  {
+   "code": "Eph",
+   "name": "Ephesians",
+   "abbr": "Eph",
+   "group": "Epistles",
+   "aliases": [
+    "eph",
+    "ephesians",
+    "ep",
+    "ephes"
+   ],
+   "chapters": [23,22,21,32,33,24]
+  },
+  {
+   "code": "Phil",
+   "name": "Philippians",
+   "abbr": "Phil",
+   "group": "Epistles",
+   "aliases": [
+    "phil",
+    "philippians",
+    "php",
+    "pp",
+    "phi",
+    "philip"
+   ],
+   "chapters": [30,30,21,23]
+  },
+  {
+   "code": "Col",
+   "name": "Colossians",
+   "abbr": "Col",
+   "group": "Epistles",
+   "aliases": [
+    "col",
+    "colossians",
+    "co",
+    "colos"
+   ],
+   "chapters": [29,23,25,18]
+  },
+  {
+   "code": "1Thess",
+   "name": "1 Thessalonians",
+   "abbr": "1Thess",
+   "group": "Epistles",
+   "aliases": [
+    "1thess",
+    "1thessalonians",
+    "1th",
+    "1thes",
+    "ithess",
+    "firstthessalonians"
+   ],
+   "chapters": [10,20,13,18,28]
+  },
+  {
+   "code": "2Thess",
+   "name": "2 Thessalonians",
+   "abbr": "2Thess",
+   "group": "Epistles",
+   "aliases": [
+    "2thess",
+    "2thessalonians",
+    "2th",
+    "2thes",
+    "iithess",
+    "secondthessalonians"
+   ],
+   "chapters": [12,17,18]
+  },
+  {
+   "code": "1Tim",
+   "name": "1 Timothy",
+   "abbr": "1Tim",
+   "group": "Epistles",
+   "aliases": [
+    "1tim",
+    "1timothy",
+    "1ti",
+    "1tm",
+    "itim",
+    "firsttimothy"
+   ],
+   "chapters": [20,15,16,16,25,21]
+  },
+  {
+   "code": "2Tim",
+   "name": "2 Timothy",
+   "abbr": "2Tim",
+   "group": "Epistles",
+   "aliases": [
+    "2tim",
+    "2timothy",
+    "2ti",
+    "2tm",
+    "iitim",
+    "secondtimothy"
+   ],
+   "chapters": [18,26,17,22]
+  },
+  {
+   "code": "Titus",
+   "name": "Titus",
+   "abbr": "Titus",
+   "group": "Epistles",
+   "aliases": [
+    "titus",
+    "tit",
+    "ti"
+   ],
+   "chapters": [16,15,15]
+  },
+  {
+   "code": "Phlm",
+   "name": "Philemon",
+   "abbr": "Phlm",
+   "group": "Epistles",
+   "aliases": [
+    "phlm",
+    "philemon",
+    "phm",
+    "philem",
+    "pm"
+   ],
+   "chapters": [25]
+  },
+  {
+   "code": "Heb",
+   "name": "Hebrews",
+   "abbr": "Heb",
+   "group": "Epistles",
+   "aliases": [
+    "heb",
+    "hebrews",
+    "he",
+    "hebr"
+   ],
+   "chapters": [14,18,19,16,14,20,28,13,28,39,40,29,25]
+  },
+  {
+   "code": "Jas",
+   "name": "James",
+   "abbr": "Jas",
+   "group": "Epistles",
+   "aliases": [
+    "jas",
+    "james",
+    "jam",
+    "jm",
+    "jms"
+   ],
+   "chapters": [27,26,18,17,20]
+  },
+  {
+   "code": "1Pet",
+   "name": "1 Peter",
+   "abbr": "1Pet",
+   "group": "Epistles",
+   "aliases": [
+    "1pet",
+    "1peter",
+    "1pe",
+    "1pt",
+    "1p",
+    "ipet",
+    "firstpeter"
+   ],
+   "chapters": [25,25,22,19,14]
+  },
+  {
+   "code": "2Pet",
+   "name": "2 Peter",
+   "abbr": "2Pet",
+   "group": "Epistles",
+   "aliases": [
+    "2pet",
+    "2peter",
+    "2pe",
+    "2pt",
+    "2p",
+    "iipet",
+    "secondpeter"
+   ],
+   "chapters": [21,22,18]
+  },
+  {
+   "code": "1John",
+   "name": "1 John",
+   "abbr": "1John",
+   "group": "Epistles",
+   "aliases": [
+    "1john",
+    "1jn",
+    "1jo",
+    "1j",
+    "ijn",
+    "firstjohn"
+   ],
+   "chapters": [10,29,24,21,21]
+  },
+  {
+   "code": "2John",
+   "name": "2 John",
+   "abbr": "2John",
+   "group": "Epistles",
+   "aliases": [
+    "2john",
+    "2jn",
+    "2jo",
+    "2j",
+    "iijn",
+    "secondjohn"
+   ],
+   "chapters": [13]
+  },
+  {
+   "code": "3John",
+   "name": "3 John",
+   "abbr": "3John",
+   "group": "Epistles",
+   "aliases": [
+    "3john",
+    "3jn",
+    "3jo",
+    "3j",
+    "iiijn",
+    "thirdjohn"
+   ],
+   "chapters": [15]
+  },
+  {
+   "code": "Jude",
+   "name": "Jude",
+   "abbr": "Jude",
+   "group": "Epistles",
+   "aliases": [
+    "jude",
+    "jud",
+    "jd"
+   ],
+   "chapters": [25]
+  },
+  {
+   "code": "Rev",
+   "name": "Revelation",
+   "abbr": "Rev",
+   "group": "Revelation",
+   "aliases": [
+    "rev",
+    "revelation",
+    "re",
+    "rv",
+    "revelations",
+    "apocalypse"
+   ],
+   "chapters": [20,29,22,11,14,17,17,13,21,11,19,17,18,20,8,21,18,24,21,15,27,21]
+  }
+ ]
+}
