@@ -42,3 +42,9 @@ test('typo returns suggestions including John', () => {
   assert.ok(r.error);
   assert.ok(r.suggestions.includes('John'), JSON.stringify(r));
 });
+
+test('nonsense short book gets no suggestions', () => {
+  const r = parseReference('Foo 1:1', verses);
+  assert.ok(r.error);
+  assert.deepEqual(r.suggestions, []);
+});

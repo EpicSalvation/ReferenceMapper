@@ -33,7 +33,7 @@ function suggest(bookKey, verses) {
       if (k.startsWith(bookKey)) best = 0;
       else if (k.length >= 3) best = Math.min(best, editDistance(bookKey, k));
     }
-    if (best <= 2) scored.push([best, b.name]);
+    if (best <= (bookKey.length <= 4 ? 1 : 2)) scored.push([best, b.name]);
   });
   scored.sort((x, y) => x[0] - y[0]);
   return scored.slice(0, 5).map((x) => x[1]);

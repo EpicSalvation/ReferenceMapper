@@ -15,12 +15,18 @@ export function xForId(verses, id, width) {
   return ((id - 0.5) / verses.total) * width;
 }
 
+// Height of the half-ellipse spanning x1..x2 (a semicircle, capped at maxHeight).
+export function arcHeight(x1, x2, maxHeight) {
+  const rx = Math.max(3, Math.abs(x2 - x1) / 2);
+  return Math.min(maxHeight, Math.max(6, rx));
+}
+
 // Half-ellipse above ('out') or below ('in') the baseline.
 export function arcPath(x1, x2, baseY, direction, maxHeight) {
   let a = Math.min(x1, x2), b = Math.max(x1, x2);
   if (b - a < 6) { const mid = (a + b) / 2; a = mid - 3; b = mid + 3; }
   const rx = (b - a) / 2;
-  const ry = Math.min(maxHeight, Math.max(6, rx));
+  const ry = arcHeight(a, b, maxHeight);
   const sweep = direction === 'out' ? 1 : 0;
   return `M ${num(a)} ${num(baseY)} A ${num(rx)} ${num(ry)} 0 0 ${sweep} ${num(b)} ${num(baseY)}`;
 }

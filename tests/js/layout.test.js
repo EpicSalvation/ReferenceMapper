@@ -91,3 +91,10 @@ test('selectLabels handles 500 arcs quickly', () => {
   selectLabels(arcs, { maxLabels: 25, minGap: 4, labelWidth: 50 });
   assert.ok(performance.now() - t < 50);
 });
+
+import { arcHeight } from '../../public/js/layout.js';
+test('arcHeight matches the height used by arcPath', () => {
+  assert.equal(arcHeight(100, 300, 150), 100);
+  assert.equal(arcHeight(900, 100, 80), 80);
+  assert.ok(arcHeight(500, 500, 150) >= 6);
+});

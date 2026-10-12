@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bible Cross References</title>
+<meta name="description" content="Explore the cross references to and from any verse of the Bible as an arc diagram.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="page-header">
+  <h1>Bible Cross References</h1>
+  <p class="tagline">Pick a verse to see what it points to (above the bar) and what points back to it (below).</p>
+</header>
+
+<main>
+  <section class="controls" aria-label="Choose a verse">
+    <form id="lookup" class="row" novalidate>
+      <label for="ref" class="sr-only">Type a reference</label>
+      <input id="ref" type="text" placeholder="Type a verse, e.g. John 3:16" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <button type="submit">Go</button>
+    </form>
+    <p id="ref-error" class="error" role="alert" hidden></p>
+    <div class="row pickers">
+      <label>Book <select id="book"></select></label>
+      <label>Chapter <select id="chapter"></select></label>
+      <label>Verse <select id="verse"></select></label>
+    </div>
+    <div class="row filters">
+      <label class="check"><input type="checkbox" id="show-out" checked> References from this verse</label>
+      <label class="check"><input type="checkbox" id="show-in" checked> References to this verse</label>
+      <label class="slider">Minimum votes: <output id="minvotes-out">0</output>
+        <input type="range" id="minvotes" min="0" max="10" step="1" value="0"></label>
+    </div>
+  </section>
+
+  <section class="diagram-section" aria-label="Cross reference diagram">
+    <h2 id="current">&nbsp;</h2>
+    <p id="status" class="status" role="status"></p>
+    <div id="diagram-wrap" class="diagram-wrap">
+      <svg id="diagram" role="img" aria-label="Arc diagram of cross references"></svg>
+    </div>
+    <ul id="legend" class="legend" aria-label="Book groups"></ul>
+    <div class="row downloads">
+      <button type="button" id="dl-png">Download PNG</button>
+      <button type="button" id="dl-svg" class="secondary">Download SVG</button>
+    </div>
+  </section>
+
+  <section id="detail" class="detail" aria-live="polite">
+    <p id="detail-empty" class="muted">Select a connection to see its details.</p>
+    <div id="detail-body" hidden>
+      <h3 id="detail-ref"></h3>
+      <p id="detail-meta"></p>
+      <div id="verse-text"></div><!-- reserved for verse text (bible.api) in a later version -->
+      <p class="row">
+        <a id="detail-link" target="_blank" rel="noopener noreferrer">Read on BibleGateway</a>
+        <button type="button" id="goto">Go to this verse</button>
+      </p>
+    </div>
+  </section>
+
+  <section class="list-section" aria-label="Connections">
+    <div class="row list-head">
+      <h2>Connections <span id="count" class="muted"></span></h2>
+      <label>Sort by
+        <select id="sort">
+          <option value="votes">Votes</option>
+          <option value="position">Bible order</option>
+        </select>
+      </label>
+    </div>
+    <ul id="connections" class="connections"></ul>
+  </section>
+</main>
+
+<footer>
+  Cross-reference data: <a href="https://www.openbible.info/labs/cross-references/" target="_blank" rel="noopener noreferrer">openbible.info</a> (CC-BY).
+</footer>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
