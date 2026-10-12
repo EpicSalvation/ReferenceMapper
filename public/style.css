@@ -101,7 +101,6 @@ button.secondary { background: transparent; color: var(--accent); }
 .g-Acts { fill: var(--c-Acts); }
 .g-Epistles { fill: var(--c-Epistles); }
 .g-Revelation { fill: var(--c-Revelation); }
-.book-label { font: 600 10px system-ui, sans-serif; fill: #fff; pointer-events: none; }
 .arc-hit { stroke: transparent; stroke-width: 14; pointer-events: stroke; cursor: pointer; }
 .arc-line { pointer-events: none; fill: none; }
 .arc:hover .arc-line { stroke-opacity: 1 !important; }

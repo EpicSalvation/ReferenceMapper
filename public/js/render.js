@@ -1,8 +1,7 @@
 // Builds the arc-diagram SVG. Colors come from CSS custom properties (see style.css).
-import { layoutBar, xForId, arcPath, arcHeight, arcRatio, maxArcHeight, arcStyle, selectLabels, zoneLabel } from './layout.js';
+import { layoutBar, xForId, arcPath, arcHeight, arcRatio, maxArcHeight, arcStyle, selectLabels, zoneLabel, styleSettings } from './layout.js';
 
 const NS = 'http://www.w3.org/2000/svg';
-export const BAR_HEIGHT = 26;
 
 function el(name, attrs = {}, text) {
   const node = document.createElementNS(NS, name);
@@ -17,6 +16,7 @@ function el(name, attrs = {}, text) {
  */
 export function renderDiagram(svg, state) {
   const { verses, verseId, connections, width, narrow, selectedIndex, showOut, showIn } = state;
+  const st = styleSettings(state.styleName);
   const x1 = xForId(verses, verseId, width);
   const ratio = arcRatio(narrow);
   const maxH = Math.ceil(maxArcHeight(x1, width, ratio));
@@ -24,7 +24,7 @@ export function renderDiagram(svg, state) {
   const topH = showOut ? maxH + labelPad : 8;
   const bottomH = showIn ? maxH + labelPad : 8;
   const barTop = topH;
-  const barBottom = barTop + BAR_HEIGHT;
+  const barBottom = barTop + st.barHeight;
   const height = barBottom + bottomH;
 
   svg.replaceChildren();
@@ -46,10 +46,7 @@ export function renderDiagram(svg, state) {
   for (const b of layoutBar(verses, width)) {
     const g = el('g');
     g.append(el('title', {}, b.name));
-    g.append(el('rect', { x: b.x, y: barTop, width: Math.max(b.w, 0.5), height: BAR_HEIGHT, class: `book g-${b.group}` }));
-    if (b.w >= 7 * b.abbr.length + 4) {
-      g.append(el('text', { x: b.x + b.w / 2, y: barTop + BAR_HEIGHT / 2 + 3.5, class: 'book-label', 'text-anchor': 'middle' }, b.abbr));
-    }
+    g.append(el('rect', { x: b.x, y: barTop, width: Math.max(b.w, 0.5), height: st.barHeight, class: `book g-${b.group}` }));
     bar.append(g);
   }
   svg.append(bar);
@@ -77,22 +74,22 @@ export function renderDiagram(svg, state) {
     const g0 = geo[i];
     const baseY = c.dir === 'out' ? barTop : barBottom;
     const d = arcPath(x1, g0.tx, baseY, c.dir, ratio);
-    const style = arcStyle(c.votes, maxVotes);
+    const style = arcStyle(c.votes, maxVotes, st);
     const selected = i === selectedIndex;
     const g = el('g', { 'data-arc': i, class: `arc ${c.dir}${selected ? ' selected' : ''}` });
     g.append(el('title', {}, `${c.label} · ${c.votes} votes`));
     g.append(el('path', {
       d, class: 'arc-line', fill: 'none',
-      style: `${c.dir === 'in' ? 'stroke-dasharray:7 4;' : ''}stroke:var(--c-${g0.group});stroke-width:${selected ? style.strokeWidth + 2 : style.strokeWidth};stroke-opacity:${selected ? 1 : style.opacity}`,
+      style: `${c.dir === 'in' ? 'stroke-dasharray:7 4;' : ''}stroke:var(--c-${g0.group});stroke-width:${selected ? style.strokeWidth + st.selectedExtra : style.strokeWidth};stroke-opacity:${selected ? 1 : style.opacity}`,
     }));
     g.append(el('path', { d, class: 'arc-hit', fill: 'none' }));
     // landing mark (band for a range, dot for a single verse)
     if (c.start !== c.end) {
       const bx = xForId(verses, c.start, width) - slot / 2;
       const bw = Math.max(2, (c.end - c.start + 1) * slot);
-      g.append(el('rect', { x: bx, y: c.dir === 'out' ? barTop - 5 : barBottom, width: bw, height: 5, style: `fill:var(--c-${g0.group})` }));
+      g.append(el('rect', { x: bx, y: c.dir === 'out' ? barTop - st.bandH : barBottom, width: bw, height: st.bandH, style: `fill:var(--c-${g0.group})` }));
     } else {
-      g.append(el('circle', { cx: g0.tx, cy: baseY, r: selected ? 3.5 : 2.2, style: `fill:var(--c-${g0.group})` }));
+      g.append(el('circle', { cx: g0.tx, cy: baseY, r: selected ? st.dotRSelected : st.dotR, style: `fill:var(--c-${g0.group})` }));
     }
     arcs.append(g);
   }
@@ -100,8 +97,8 @@ export function renderDiagram(svg, state) {
 
   // Chosen-verse marker
   const marker = el('g', { class: 'marker' });
-  marker.append(el('line', { x1, x2: x1, y1: barTop - 6, y2: barBottom + 6 }));
-  marker.append(el('circle', { cx: x1, cy: barTop + BAR_HEIGHT / 2, r: 4 }));
+  marker.append(el('line', { x1, x2: x1, y1: barTop - 6, y2: barBottom + 6, style: `stroke-width:${st.markerLine}` }));
+  marker.append(el('circle', { cx: x1, cy: barTop + st.barHeight / 2, r: st.markerDot, style: `stroke-width:${st.markerLine}` }));
   svg.append(marker);
 
   // Labels (wide layouts only)

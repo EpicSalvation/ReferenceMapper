@@ -9,6 +9,10 @@ Web-based Bible cross-reference visualizer. Pick a verse (menus or type "John 3:
 - `public/js/*` converts IDs to names, lays out and draws the SVG, handles search, and exports images.
 - Votes in the data are community votes on how useful each *pair* is; they drive arc thickness/opacity and sorting.
 
+## Styles
+
+The diagram has two looks: **Light** (default; thin book bar, fine faint arcs) and **Bold** (a chunky bar and heavy arcs, handy for slides). Switch with the Style menu, or share a link with `?style=bold` / `?style=light` (for example `https://example.com/?style=bold#John.3.16`). A link parameter wins over the browser's saved choice, which wins over the default. PNG/SVG downloads use whichever style is on screen. The numbers for each style live in `STYLES` in `public/js/layout.js`.
+
 ## Local development
 
 Requires PHP 8.1+ with `pdo_sqlite` (developed on 8.5.8, deployed on 8.1.34) and Node 18+ for the JS tests. If your local PHP has no `php.ini`, use the one in `dev/`:

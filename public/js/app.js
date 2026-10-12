@@ -1,7 +1,7 @@
 import { createVerses } from './verses.js';
 import { parseReference, decodeHash } from './parse.js';
 import { renderDiagram } from './render.js';
-import { directionInfo } from './layout.js';
+import { directionInfo, resolveStyle } from './layout.js';
 import { downloadPng, downloadSvg, exportFilename } from './export.js';
 
 const $ = (id) => document.getElementById(id);
@@ -18,7 +18,22 @@ const state = {
   minVotes: 0,
   selectedKey: null,
   sort: 'votes',
+  styleName: 'light',
 };
+
+const STYLE_KEY = 'refmap-style';
+function readStoredStyle() {
+  try { return localStorage.getItem(STYLE_KEY); } catch { return null; }
+}
+function storeStyle(name) {
+  try { localStorage.setItem(STYLE_KEY, name); } catch { /* storage unavailable: fine */ }
+}
+// Keep ?style= in the address bar so the current look can be shared.
+function syncStyleParam(name) {
+  const url = new URL(location.href);
+  url.searchParams.set('style', name);
+  history.replaceState(null, '', url);
+}
 let pendingId = null;
 let loadSeq = 0;
 
@@ -52,7 +67,7 @@ function render() {
 
   renderDiagram($('diagram'), {
     verses: state.verses, verseId: state.verseId, connections: conns, width,
-    narrow: width < NARROW_PX, selectedIndex, showOut: state.showOut, showIn: state.showIn,
+    narrow: width < NARROW_PX, styleName: state.styleName, selectedIndex, showOut: state.showOut, showIn: state.showIn,
   });
 
   const total = state.data.out.length + state.data.in.length;
@@ -241,6 +256,15 @@ async function init() {
     selectVerse(r.id, { log: true });
   });
   $('ref').addEventListener('input', () => showRefError(''));
+
+  state.styleName = resolveStyle({ search: location.search, stored: readStoredStyle() });
+  $('style').value = state.styleName;
+  $('style').addEventListener('change', (e) => {
+    state.styleName = resolveStyle({ search: '?style=' + e.target.value });
+    storeStyle(state.styleName);
+    syncStyleParam(state.styleName);
+    render();
+  });
 
   $('show-out').addEventListener('change', (e) => { state.showOut = e.target.checked; render(); });
   $('show-in').addEventListener('change', (e) => { state.showIn = e.target.checked; render(); });

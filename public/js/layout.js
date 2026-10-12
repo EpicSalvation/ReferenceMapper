@@ -42,9 +42,36 @@ export function arcPath(x1, x2, baseY, direction, ratio) {
   return `M ${num(a)} ${num(baseY)} A ${num(rx)} ${num(ry)} 0 0 ${sweep} ${num(b)} ${num(baseY)}`;
 }
 
-export function arcStyle(votes, maxVotes) {
+// Visual styles. 'bold' is the original chunky look (good for slides); 'light' is the default.
+export const STYLES = {
+  bold: {
+    barHeight: 26, strokeMin: 1, strokeMax: 6, opacityMin: 0.25, opacityMax: 0.9,
+    selectedExtra: 2, dotR: 2.2, dotRSelected: 3.5, bandH: 5, markerLine: 2, markerDot: 4,
+  },
+  light: {
+    barHeight: 8, strokeMin: 0.6, strokeMax: 2.2, opacityMin: 0.18, opacityMax: 0.6,
+    selectedExtra: 1.2, dotR: 1.4, dotRSelected: 2.6, bandH: 3, markerLine: 1.2, markerDot: 2.6,
+  },
+};
+
+export function styleSettings(name) {
+  return STYLES[name] ?? STYLES.light;
+}
+
+// Picks the style: ?style=bold|light in the link wins, then the saved preference, then 'light'.
+export function resolveStyle({ search = '', stored = null } = {}) {
+  const fromLink = new URLSearchParams(search).get('style');
+  if (fromLink && Object.hasOwn(STYLES, fromLink)) return fromLink;
+  if (stored && Object.hasOwn(STYLES, stored)) return stored;
+  return 'light';
+}
+
+export function arcStyle(votes, maxVotes, settings = STYLES.bold) {
   const t = maxVotes > 0 ? Math.min(1, Math.log1p(Math.max(0, votes)) / Math.log1p(maxVotes)) : 0;
-  return { strokeWidth: num(1 + 5 * t), opacity: num(0.25 + 0.65 * t) };
+  return {
+    strokeWidth: num(settings.strokeMin + (settings.strokeMax - settings.strokeMin) * t),
+    opacity: num(settings.opacityMin + (settings.opacityMax - settings.opacityMin) * t),
+  };
 }
 
 // Picks arcs to label, highest votes first, skipping any whose label box would

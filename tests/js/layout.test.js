@@ -131,3 +131,45 @@ test('directionInfo gives a visible badge and a full screen-reader phrase', () =
   assert.deepEqual(directionInfo('out'), { badge: 'From', sr: 'Outgoing reference' });
   assert.deepEqual(directionInfo('in'), { badge: 'To', sr: 'Incoming reference' });
 });
+
+import { STYLES, styleSettings, resolveStyle } from '../../public/js/layout.js';
+
+test('bold style keeps the original chunky values', () => {
+  const b = styleSettings('bold');
+  assert.equal(b.barHeight, 26);
+  assert.equal(b.strokeMin, 1);
+  assert.equal(b.strokeMax, 6);
+  assert.equal(b.opacityMin, 0.25);
+  assert.equal(b.opacityMax, 0.9);
+});
+
+test('light style is thinner and fainter than bold in every dimension', () => {
+  const l = styleSettings('light'), b = styleSettings('bold');
+  for (const k of ['barHeight', 'strokeMin', 'strokeMax', 'opacityMax', 'selectedExtra', 'dotR', 'bandH', 'markerLine', 'markerDot']) {
+    assert.ok(l[k] < b[k], k);
+  }
+  assert.ok(l.opacityMin <= b.opacityMin);
+});
+
+test('unknown style names fall back to light', () => {
+  assert.equal(styleSettings('nonsense'), STYLES.light);
+  assert.equal(styleSettings(undefined), STYLES.light);
+});
+
+test('arcStyle uses the given settings', () => {
+  const l = styleSettings('light'), b = styleSettings('bold');
+  assert.ok(arcStyle(1000, 1000, l).strokeWidth <= l.strokeMax + 1e-9);
+  assert.ok(arcStyle(1000, 1000, l).strokeWidth < arcStyle(1000, 1000, b).strokeWidth);
+  assert.ok(arcStyle(1, 1000, l).opacity >= l.opacityMin - 1e-9);
+  assert.ok(arcStyle(1000, 1000, l).opacity <= l.opacityMax + 1e-9);
+});
+
+test('resolveStyle: link parameter beats saved preference beats default light', () => {
+  assert.equal(resolveStyle({ search: '?style=bold', stored: 'light' }), 'bold');
+  assert.equal(resolveStyle({ search: '?x=1&style=light', stored: 'bold' }), 'light');
+  assert.equal(resolveStyle({ search: '', stored: 'bold' }), 'bold');
+  assert.equal(resolveStyle({ search: '', stored: null }), 'light');
+  assert.equal(resolveStyle({ search: '?style=neon', stored: 'bold' }), 'bold');
+  assert.equal(resolveStyle({ search: '?style=neon', stored: 'weird' }), 'light');
+  assert.equal(resolveStyle({}), 'light');
+});
