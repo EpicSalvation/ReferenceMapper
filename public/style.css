@@ -107,6 +107,9 @@ button.secondary { background: transparent; color: var(--accent); }
 .zone-out { fill: var(--zone-out); }
 .zone-in { fill: var(--zone-in); }
 .zone-label { font: 600 12px system-ui, sans-serif; fill: var(--fg); paint-order: stroke; stroke: var(--panel); stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
+.tick-halo { stroke: var(--panel); stroke-opacity: 0.85; }
+.tick-line { stroke: var(--fg); }
+.tick-hit { fill: transparent; }
 .marker line { stroke: var(--fg); stroke-width: 2; }
 .marker circle { fill: var(--fg); stroke: var(--panel); stroke-width: 2; }
 .arc-label { font: 11px system-ui, sans-serif; fill: var(--fg); paint-order: stroke; stroke: var(--panel); stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }

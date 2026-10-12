@@ -29,3 +29,27 @@ test('exportFilename builds reference-map-<ref>.<ext> and sanitizes', () => {
   assert.equal(exportFilename('John.3.16', 'png'), 'reference-map-John.3.16.png');
   assert.equal(exportFilename('Gen/1 1', 'svg'), 'reference-map-Gen-1-1.svg');
 });
+
+const legend = [{ name: 'Law', color: '#b5651d' }, { name: 'History', color: '#8a6d1d' }, { name: 'Revelation', color: '#1f8a9e' }];
+const withKey = buildStandaloneSvgString('<g/>', { ...opts, legend });
+
+test('export includes a color key with every group name and swatch color', () => {
+  for (const l of legend) {
+    assert.ok(withKey.includes('>' + l.name + '<'), l.name);
+    assert.ok(withKey.includes('fill="' + l.color + '"'), l.color);
+  }
+});
+
+const heightOf = (markup) => +/viewBox="0 0 \d+ (\d+)"/.exec(markup)[1];
+
+test('export grows to make room for the key, and more so when the image is narrow', () => {
+  assert.ok(heightOf(withKey) > heightOf(svg));
+  const wide = buildStandaloneSvgString('<g/>', { ...opts, width: 1200, legend });
+  const narrow = buildStandaloneSvgString('<g/>', { ...opts, width: 200, legend });
+  assert.ok(heightOf(narrow) > heightOf(wide), 'narrow key wraps to extra rows');
+});
+
+test('no legend means no key and the same size as before', () => {
+  const same = buildStandaloneSvgString('<g/>', { ...opts, legend: [] });
+  assert.equal(heightOf(same), heightOf(svg));
+});

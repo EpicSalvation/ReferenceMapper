@@ -290,7 +290,10 @@ async function init() {
     if (target) selectVerse(target, { log: true });
   });
 
-  const exportOpts = () => ({ title: state.verses.label(state.verseId) + ' — cross references' });
+  const exportOpts = () => ({
+    title: state.verses.label(state.verseId) + ' — cross references',
+    legend: GROUPS.map((g) => ({ name: g, color: getComputedStyle(document.documentElement).getPropertyValue('--c-' + g).trim() })),
+  });
   $('dl-png').addEventListener('click', async () => {
     try {
       await downloadPng($('diagram'), exportOpts(), exportFilename(state.verses.refFromId(state.verseId), 'png'));

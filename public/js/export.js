@@ -1,3 +1,5 @@
+import { layoutLegend } from './layout.js';
+
 // Client-side image export: standalone SVG and PNG. Nothing is sent to the server.
 
 export const ATTRIBUTION = 'Cross-reference data: openbible.info (CC-BY)';
@@ -12,14 +14,17 @@ export function exportFilename(ref, ext) {
 }
 
 /** Wraps already-inlined diagram markup with a title, attribution and background. */
-export function buildStandaloneSvgString(innerMarkup, { title, width, height, background, color }) {
-  const total = height + HEADER + FOOTER;
+export function buildStandaloneSvgString(innerMarkup, { title, width, height, background, color, legend = [] }) {
+  const key = layoutLegend(legend, width);
+  const keyHeight = key.rows ? key.height + 10 : 0;
+  const total = height + HEADER + keyHeight + FOOTER;
   const font = 'font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif"';
   return [
     `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${total}" viewBox="0 0 ${width} ${total}">`,
     `<rect width="${width}" height="${total}" fill="${escapeXml(background)}"/>`,
     `<text x="14" y="26" ${font} font-size="18" font-weight="700" fill="${escapeXml(color)}">${escapeXml(title)}</text>`,
     `<g transform="translate(0 ${HEADER})">${innerMarkup}</g>`,
+    key.rows ? `<g transform="translate(0 ${HEADER + height + 8})">${key.items.map((it, i) => `<rect x="${it.x}" y="${it.y + 2}" width="10" height="10" rx="2" fill="${escapeXml(legend[i].color)}"/><text x="${it.x + 16}" y="${it.y + 11}" ${font} font-size="12" fill="${escapeXml(color)}">${escapeXml(it.name)}</text>`).join('')}</g>` : '',
     `<text x="14" y="${total - 9}" ${font} font-size="11" fill="${escapeXml(color)}" fill-opacity="0.7">${escapeXml(ATTRIBUTION)}</text>`,
     '</svg>',
   ].join('');
@@ -46,7 +51,7 @@ function inlineDiagram(svgEl) {
   return new XMLSerializer().serializeToString(clone).replace(/^<svg[^>]*>|<\/svg>$/g, '');
 }
 
-function buildFromDom(svgEl, { title }) {
+function buildFromDom(svgEl, { title, legend }) {
   const cs = getComputedStyle(svgEl.closest('.diagram-wrap') || svgEl);
   const width = +svgEl.getAttribute('width');
   const height = +svgEl.getAttribute('height');
@@ -54,7 +59,7 @@ function buildFromDom(svgEl, { title }) {
   return {
     width, height,
     markup: buildStandaloneSvgString(inlineDiagram(svgEl), {
-      title, width, height, background: cs.backgroundColor, color: body.color,
+      title, width, height, background: cs.backgroundColor, color: body.color, legend,
     }),
   };
 }

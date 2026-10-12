@@ -1,5 +1,5 @@
 // Builds the arc-diagram SVG. Colors come from CSS custom properties (see style.css).
-import { layoutBar, xForId, arcPath, arcHeight, arcRatio, maxArcHeight, arcStyle, selectLabels, zoneLabel, styleSettings } from './layout.js';
+import { layoutBar, xForId, arcPath, arcHeight, arcRatio, maxArcHeight, arcStyle, selectLabels, zoneLabel, styleSettings, testamentBoundaryX } from './layout.js';
 
 const NS = 'http://www.w3.org/2000/svg';
 
@@ -94,6 +94,16 @@ export function renderDiagram(svg, state) {
     arcs.append(g);
   }
   svg.append(arcs);
+
+  // Old/New Testament tick: crosses the bar and pokes out a little on both sides
+  const tx0 = testamentBoundaryX(verses, width);
+  const tick = el('g', { class: 'testament-tick' });
+  tick.append(el('line', { x1: tx0, x2: tx0, y1: barTop - st.tickExtra, y2: barBottom + st.tickExtra, class: 'tick-halo', style: `stroke-width:${st.tickWidth + 2}` }));
+  tick.append(el('line', { x1: tx0, x2: tx0, y1: barTop - st.tickExtra, y2: barBottom + st.tickExtra, class: 'tick-line', style: `stroke-width:${st.tickWidth}` }));
+  const tickHit = el('rect', { x: tx0 - 5, y: barTop, width: 10, height: st.barHeight, class: 'tick-hit' });
+  tickHit.append(el('title', {}, 'Old Testament | New Testament'));
+  tick.append(tickHit);
+  svg.append(tick);
 
   // Chosen-verse marker
   const marker = el('g', { class: 'marker' });

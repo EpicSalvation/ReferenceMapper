@@ -47,10 +47,12 @@ export const STYLES = {
   bold: {
     barHeight: 26, strokeMin: 1, strokeMax: 6, opacityMin: 0.25, opacityMax: 0.9,
     selectedExtra: 2, dotR: 2.2, dotRSelected: 3.5, bandH: 5, markerLine: 2, markerDot: 4,
+    tickWidth: 2, tickExtra: 7,
   },
   light: {
     barHeight: 8, strokeMin: 0.6, strokeMax: 2.2, opacityMin: 0.18, opacityMax: 0.6,
     selectedExtra: 1.2, dotR: 1.4, dotRSelected: 2.6, bandH: 3, markerLine: 1.2, markerDot: 2.6,
+    tickWidth: 1, tickExtra: 5,
   },
 };
 
@@ -100,4 +102,25 @@ export function directionInfo(direction) {
   return direction === 'out'
     ? { badge: 'From', sr: 'Outgoing reference' }
     : { badge: 'To', sr: 'Incoming reference' };
+}
+
+// x of the Old/New Testament boundary (the start of Matthew, which is the end of Malachi).
+export function testamentBoundaryX(verses, width) {
+  const matt = verses.books.find((b) => b.code === 'Matt');
+  return ((matt.startId - 1) / verses.total) * width;
+}
+
+// Lays a row-wrapped color key out in a given width. items: names, or {name} objects.
+export function layoutLegend(items, width, { swatch = 10, gap = 18, charWidth = 6.6, rowHeight = 20, pad = 14 } = {}) {
+  const out = [];
+  let x = pad, row = 0;
+  for (const it of items) {
+    const name = typeof it === 'string' ? it : it.name;
+    const w = swatch + 6 + Math.ceil(name.length * charWidth);
+    if (x > pad && x + w > width - pad) { row++; x = pad; }
+    out.push({ name, x, y: row * rowHeight, w });
+    x += w + gap;
+  }
+  const rows = out.length ? row + 1 : 0;
+  return { items: out, rows, height: rows * rowHeight };
 }

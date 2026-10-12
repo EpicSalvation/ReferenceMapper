@@ -173,3 +173,45 @@ test('resolveStyle: link parameter beats saved preference beats default light', 
   assert.equal(resolveStyle({ search: '?style=neon', stored: 'weird' }), 'light');
   assert.equal(resolveStyle({}), 'light');
 });
+
+import { testamentBoundaryX, layoutLegend } from '../../public/js/layout.js';
+
+test('testamentBoundaryX sits exactly between Malachi and Matthew', () => {
+  const bar = layoutBar(verses, 1000);
+  const mal = bar.find((b) => b.code === 'Mal'), matt = bar.find((b) => b.code === 'Matt');
+  const x = testamentBoundaryX(verses, 1000);
+  assert.ok(Math.abs(x - matt.x) < 1e-9);
+  assert.ok(Math.abs(x - (mal.x + mal.w)) < 1e-9);
+  assert.ok(x > 0 && x < 1000);
+});
+
+test('tick settings: light is thinner and shorter than bold', () => {
+  const l = styleSettings('light'), b = styleSettings('bold');
+  assert.ok(l.tickWidth < b.tickWidth && l.tickExtra < b.tickExtra);
+});
+
+const names = ['Law', 'History', 'Wisdom', 'Prophets', 'Gospels', 'Acts', 'Epistles', 'Revelation'];
+test('layoutLegend fits one row when there is room and keeps order', () => {
+  const r = layoutLegend(names, 1200);
+  assert.equal(r.rows, 1);
+  assert.deepEqual(r.items.map((i) => i.name), names);
+  assert.ok(r.items.every((i) => i.y === r.items[0].y));
+  assert.ok(r.height > 0);
+});
+
+test('layoutLegend wraps on narrow widths without overflowing or overlapping', () => {
+  const r = layoutLegend(names, 300);
+  assert.ok(r.rows > 1);
+  for (const it of r.items) assert.ok(it.x >= 0 && it.x + it.w <= 300, `${it.name} ${it.x}+${it.w}`);
+  for (let i = 1; i < r.items.length; i++) {
+    const a = r.items[i - 1], b = r.items[i];
+    if (a.y === b.y) assert.ok(b.x >= a.x + a.w, `${a.name} overlaps ${b.name}`);
+  }
+  assert.equal(r.height, r.rows * layoutLegend(names, 1200).height);
+});
+
+test('layoutLegend handles an empty list', () => {
+  const r = layoutLegend([], 500);
+  assert.equal(r.rows, 0);
+  assert.equal(r.height, 0);
+});
