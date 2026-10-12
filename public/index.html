@@ -17,7 +17,8 @@
   <section class="controls" aria-label="Choose a verse">
     <form id="lookup" class="row" novalidate>
       <label for="ref" class="sr-only">Type a reference</label>
-      <input id="ref" type="text" placeholder="Type a verse, e.g. John 3:16" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <datalist id="book-names"></datalist>
+      <input id="ref" type="text" placeholder="Type a verse, e.g. John 3:16" list="book-names" autocomplete="off" autocapitalize="off" spellcheck="false">
       <button type="submit">Go</button>
     </form>
     <p id="ref-error" class="error" role="alert" hidden></p>
@@ -25,6 +26,7 @@
       <label>Book <select id="book"></select></label>
       <label>Chapter <select id="chapter"></select></label>
       <label>Verse <select id="verse"></select></label>
+      <button type="button" id="pick-go">Go</button>
     </div>
     <div class="row filters">
       <label class="check"><input type="checkbox" id="show-out" checked> References from this verse</label>

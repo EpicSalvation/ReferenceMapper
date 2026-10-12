@@ -30,8 +30,13 @@ function handleRefs(array $query, PDO $refs, ?PDO $searches): array
 
     $log = ($query['log'] ?? '') === '1' && $searches !== null;
     if ($log) {
-        $st = $searches->prepare('INSERT INTO searches (verse_id, count, last_at) VALUES (?, 1, ?) ON CONFLICT(verse_id) DO UPDATE SET count = count + 1, last_at = excluded.last_at');
-        $st->execute([$v, time()]);
+        // Counting is best-effort: a failure here must never break the lookup.
+        try {
+            $st = $searches->prepare('INSERT INTO searches (verse_id, count, last_at) VALUES (?, 1, ?) ON CONFLICT(verse_id) DO UPDATE SET count = count + 1, last_at = excluded.last_at');
+            $st->execute([$v, time()]);
+        } catch (Throwable $e) {
+            // ignore
+        }
     }
 
     return [
@@ -50,8 +55,15 @@ if (PHP_SAPI !== 'cli' && isset($_SERVER['SCRIPT_FILENAME']) && realpath($_SERVE
     header('Content-Type: application/json');
     try {
         Verses::load(dataDir() . '/books.json');
-        $wantsLog = ($_GET['log'] ?? '') === '1';
-        $result = handleRefs($_GET, Db::refs(), $wantsLog ? Db::searches() : null);
+        $searches = null;
+        if (($_GET['log'] ?? '') === '1') {
+            try {
+                $searches = Db::searches();
+            } catch (Throwable $e) {
+                $searches = null; // unwritable data dir: still serve the lookup
+            }
+        }
+        $result = handleRefs($_GET, Db::refs(), $searches);
     } catch (Throwable $e) {
         http_response_code(500);
         echo json_encode(['error' => 'server error']);

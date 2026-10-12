@@ -78,3 +78,12 @@ export function parseReference(text, verses) {
   const suggestions = suggest(bookKey, verses);
   return { error: `Unknown book "${tokens.slice(0, tokens.length - trailing).join(' ') || text}".`, suggestions };
 }
+
+/** Returns the decoded text after '#', or '' if the hash is empty or malformed. */
+export function decodeHash(hash) {
+  try {
+    return decodeURIComponent(String(hash ?? '').replace(/^#/, ''));
+  } catch {
+    return '';
+  }
+}

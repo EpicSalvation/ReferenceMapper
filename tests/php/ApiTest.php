@@ -118,4 +118,12 @@ return [
         assertSame([], $r['body']['out']);
         assertSame([], $r['body']['in']);
     },
+    'logging failure does not break the lookup' => function () {
+        [$refs, $s] = seededDbs();
+        $broken = new PDO('sqlite::memory:');
+        $broken->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = handleRefs(['v' => 'Gen.1.1', 'log' => '1'], $refs, $broken);
+        assertSame(200, $r['status']);
+        assertSame(2, count($r['body']['out']));
+    },
 ];

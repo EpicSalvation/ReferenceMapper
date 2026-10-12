@@ -1,5 +1,5 @@
 import { createVerses } from './verses.js';
-import { parseReference } from './parse.js';
+import { parseReference, decodeHash } from './parse.js';
 import { renderDiagram } from './render.js';
 import { downloadPng, downloadSvg, exportFilename } from './export.js';
 
@@ -70,6 +70,7 @@ function renderList(conns) {
     ? (a, b) => a.start - b.start || a.end - b.end
     : (a, b) => b.votes - a.votes || a.start - b.start);
   const ul = $('connections');
+  const hadFocus = ul.contains(document.activeElement);
   ul.replaceChildren();
   for (const c of sorted) {
     const li = document.createElement('li');
@@ -91,6 +92,7 @@ function renderList(conns) {
     ul.append(li);
   }
   $('count').textContent = `(${conns.length})`;
+  if (hadFocus) ul.querySelector('button[aria-current]')?.focus();
 }
 
 function renderDetail(c) {
@@ -181,7 +183,7 @@ function showRefError(msg, suggestions) {
 }
 
 function idFromHash() {
-  const raw = decodeURIComponent(location.hash.slice(1) || '');
+  const raw = decodeHash(location.hash);
   if (!raw) return null;
   const direct = state.verses.idFromRef(raw);
   if (direct !== null) return direct;
@@ -202,6 +204,9 @@ async function init() {
     o.value = String(i);
     o.textContent = b.name;
     bookSel.append(o);
+    const d = document.createElement('option');
+    d.value = b.name;
+    $('book-names').append(d);
   });
   for (const g of GROUPS) {
     const li = document.createElement('li');
@@ -218,7 +223,7 @@ async function init() {
   $('chapter').addEventListener('change', () => {
     fillOptions($('verse'), v.verseCount(+bookSel.value, +$('chapter').value), String);
   });
-  $('verse').addEventListener('change', () => {
+  $('pick-go').addEventListener('click', () => {
     selectVerse(v.idFromParts(+bookSel.value, +$('chapter').value, +$('verse').value), { log: true });
   });
 

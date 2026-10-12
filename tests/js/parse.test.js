@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createVerses } from '../../public/js/verses.js';
-import { parseReference } from '../../public/js/parse.js';
+import { parseReference, decodeHash } from '../../public/js/parse.js';
 
 const verses = createVerses(JSON.parse(readFileSync(new URL('../../public/books.json', import.meta.url))));
 const ok = (text, ref) => test(`parses ${JSON.stringify(text)} as ${ref}`, () => {
@@ -47,4 +47,15 @@ test('nonsense short book gets no suggestions', () => {
   const r = parseReference('Foo 1:1', verses);
   assert.ok(r.error);
   assert.deepEqual(r.suggestions, []);
+});
+
+test('decodeHash strips # and decodes', () => {
+  assert.equal(decodeHash('#John.3.16'), 'John.3.16');
+  assert.equal(decodeHash('#John%203%3A16'), 'John 3:16');
+  assert.equal(decodeHash(''), '');
+});
+test('decodeHash tolerates malformed escapes', () => {
+  assert.equal(decodeHash('#%'), '');
+  assert.equal(decodeHash('#100%'), '');
+  assert.equal(decodeHash('#%E0%A4%A'), '');
 });
