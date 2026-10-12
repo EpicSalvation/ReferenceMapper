@@ -1,6 +1,7 @@
 import { createVerses } from './verses.js';
 import { parseReference } from './parse.js';
 import { renderDiagram } from './render.js';
+import { downloadPng, downloadSvg, exportFilename } from './export.js';
 
 const $ = (id) => document.getElementById(id);
 const DEFAULT_REF = 'John.3.16';
@@ -253,6 +254,19 @@ async function init() {
   $('goto').addEventListener('click', () => {
     const target = +$('goto').dataset.target;
     if (target) selectVerse(target, { log: true });
+  });
+
+  const exportOpts = () => ({ title: state.verses.label(state.verseId) + ' — cross references' });
+  $('dl-png').addEventListener('click', async () => {
+    try {
+      await downloadPng($('diagram'), exportOpts(), exportFilename(state.verses.refFromId(state.verseId), 'png'));
+    } catch (err) {
+      console.error(err);
+      setStatus('Could not create the PNG. Try the SVG download instead.');
+    }
+  });
+  $('dl-svg').addEventListener('click', () => {
+    downloadSvg($('diagram'), exportOpts(), exportFilename(state.verses.refFromId(state.verseId), 'svg'));
   });
 
   let resizeTimer = null;
