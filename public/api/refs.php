@@ -1,8 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/../../src/Verses.php';
-require_once __DIR__ . '/../../src/Db.php';
+require_once __DIR__ . '/paths.php';
 
 const REFS_DEFAULT_LIMIT = 150;
 const REFS_MAX_LIMIT = 500;
@@ -54,7 +53,13 @@ if (PHP_SAPI !== 'cli' && isset($_SERVER['SCRIPT_FILENAME']) && realpath($_SERVE
     ini_set('display_errors', '0');
     header('Content-Type: application/json');
     try {
-        Verses::load(dataDir() . '/books.json');
+        $configFile = __DIR__ . '/config.local.php';
+        $config = is_file($configFile) ? require $configFile : [];
+        $paths = refmapPaths(__DIR__, is_array($config) ? $config : [], getenv());
+        require_once $paths['root'] . '/src/Verses.php';
+        require_once $paths['root'] . '/src/Db.php';
+        setDataDir($paths['data']);
+        Verses::load($paths['data'] . '/books.json');
         $searches = null;
         if (($_GET['log'] ?? '') === '1') {
             try {

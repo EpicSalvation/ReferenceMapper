@@ -37,10 +37,41 @@ node --test "tests/js/**/*.test.js"                    # JS tests
 
 ## Deploying
 
-1. Build `data/refs.sqlite` locally (or on the server with the CLI) and upload it. The source TSV is not needed on the server.
-2. Put the contents of `public/` in the web root (e.g. `public_html/`). Put `src/` and `data/` **next to** the web root, not inside it, so `data/*.sqlite` is not downloadable (the API finds them at `../../src` and `../../data` relative to `api/`). Set the `REFMAP_DATA_DIR` environment variable if your layout differs.
-3. Make `data/` writable by the web server user; `searches.sqlite` is created there on the first logged search.
-4. Confirm `pdo_sqlite` is enabled (it is on the PHP 8.1.34 server).
+Needs PHP 8.1+ with `pdo_sqlite` (SQLite 3.24+ for the search counter). The site can live at a domain root or in a subfolder such as `public_html/RefMap/`; all page URLs are relative.
+
+First build `data/refs.sqlite` locally (`php -c dev/php.ini tools/build_db.php`). The source TSV is not needed on the server. Then pick a layout.
+
+### Recommended: `src/` and `data/` outside the web root
+
+```
+~/refmap/                      (anywhere above public_html)
+├── src/                       the whole src/ folder
+└── data/                      books.json + refs.sqlite (data/books.json, not public/books.json)
+~/public_html/RefMap/          the contents of public/
+├── index.html, style.css, books.json, js/…
+└── api/                       refs.php, paths.php, config.local.php
+```
+
+Copy `api/config.local.php.example` to `api/config.local.php` and set `'root'` to the absolute path of `~/refmap`. The database then cannot be downloaded at all.
+
+### Fallback: everything inside the site folder
+
+```
+~/public_html/RefMap/
+├── index.html, style.css, books.json, js/…, api/
+├── src/                       (with its .htaccess)
+└── data/                      books.json + refs.sqlite (with its .htaccess)
+```
+
+No config file is needed (it is auto-detected). The `.htaccess` files deny web access on Apache, but verify it on your host (see below), because they are the only thing protecting the database in this layout.
+
+### Then, for either layout
+
+1. Make `data/` writable by the web server user; `searches.sqlite` is created there on the first logged search. If it is not writable the app still works, but searches are not counted.
+2. Verify: load `/RefMap/`; open `/RefMap/api/refs.php?v=John.3.16` (JSON); search for something and confirm `data/searches.sqlite` appears; and, in the fallback layout, confirm `/RefMap/data/refs.sqlite` is **not** downloadable (expect 403 or 404).
+3. Updating later: re-upload the changed files from `public/`. If you rebuild the database, replace only `refs.sqlite` and leave `searches.sqlite` alone, since it holds your counts.
+
+Location lookup order (see `public/api/paths.php`): `api/config.local.php` (`root`, `data_dir`), then the `REFMAP_ROOT` / `REFMAP_DATA_DIR` environment variables, then auto-detection.
 
 To see the most-searched verses: `SELECT verse_id, count FROM searches ORDER BY count DESC LIMIT 20;` (IDs follow canonical order; `Verses::refFromId()` converts them).
 

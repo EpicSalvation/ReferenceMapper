@@ -1,0 +1,9 @@
+<?php
+// Copy to config.local.php (same folder) and edit. Only needed if src/ and data/ are NOT
+// inside your site folder (e.g. you keep them above public_html, which is recommended).
+return [
+    // Folder that contains src/ (and, by default, data/). Use an absolute path.
+    'root' => '/home/YOURUSER/refmap',
+    // Optional: put data/ somewhere else (must be writable by PHP for search counts).
+    // 'data_dir' => '/home/YOURUSER/refmap-data',
+];

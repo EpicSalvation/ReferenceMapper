@@ -1,0 +1,9 @@
+# Backup protection if this folder ends up inside the web root (Apache). The recommended
+# layout keeps data/ outside the web root entirely.
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Order allow,deny
+  Deny from all
+</IfModule>

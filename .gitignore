@@ -1,3 +1,4 @@
 data/*.sqlite
 .superpowers/
 *.log
+public/api/config.local.php
