@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../src/Db.php';
 require_once __DIR__ . '/../../public/api/refs.php';
 Verses::load(__DIR__ . '/../../data/books.json');
 
-function seededDbs(int $extraOut = 0): array
+function seededDbs(int $extraOut = 0, ?int $maxSpan = null): array
 {
     $refs = new PDO('sqlite::memory:');
     $refs->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -23,6 +23,10 @@ function seededDbs(int $extraOut = 0): array
     }
     for ($i = 0; $i < $extraOut; $i++) {
         $ins->execute([$id('Gen.2.1'), 1000 + $i, 1000 + $i, $i]);
+    }
+    if ($maxSpan !== null) {
+        $refs->exec('CREATE TABLE meta (key TEXT PRIMARY KEY, value INTEGER NOT NULL)');
+        $refs->exec("INSERT INTO meta VALUES ('max_span', $maxSpan)");
     }
     $searches = new PDO('sqlite::memory:');
     $searches->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -55,6 +59,23 @@ return [
         [$refs, $s] = seededDbs();
         $r = handleRefs(['v' => 'Prov.8.25'], $refs, $s);
         assertSame([[Verses::idFromRef('Ps.1.1'), 10]], $r['body']['in']);
+    },
+    'bounded incoming query finds single verses and range ends' => function () {
+        [$refs, $s] = seededDbs(0, 8);
+        foreach (['Prov.8.22', 'Prov.8.25', 'Prov.8.30'] as $v) {
+            $r = handleRefs(['v' => $v], $refs, $s);
+            assertSame([[Verses::idFromRef('Ps.1.1'), 10]], $r['body']['in'], "v=$v");
+        }
+        $r = handleRefs(['v' => 'Gen.1.1'], $refs, $s);
+        assertSame([[Verses::idFromRef('John.1.1'), 50]], $r['body']['in']);
+        $r = handleRefs(['v' => 'Prov.8.31'], $refs, $s);
+        assertSame([], $r['body']['in'], 'just past the range');
+    },
+    'maxSpan reads meta and is null without it' => function () {
+        [$refs] = seededDbs();
+        assertSame(null, maxSpan($refs));
+        [$refs] = seededDbs(0, 8);
+        assertSame(8, maxSpan($refs));
     },
     'min filters low votes' => function () {
         [$refs, $s] = seededDbs();

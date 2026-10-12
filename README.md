@@ -48,9 +48,11 @@ First build `data/refs.sqlite` locally (`php -c dev/php.ini tools/build_db.php`)
 ├── src/                       the whole src/ folder
 └── data/                      books.json + refs.sqlite (data/books.json, not public/books.json)
 ~/public_html/RefMap/          the contents of public/
-├── index.html, style.css, books.json, js/…
+├── .htaccess, index.html, style.css, books.json, js/…
 └── api/                       refs.php, paths.php, config.local.php
 ```
+
+`public/.htaccess` sets security headers (CSP, nosniff, no framing) on Apache. It is a dotfile, so make sure your upload includes it. On other servers, copy the headers into the server config.
 
 Copy `api/config.local.php.example` to `api/config.local.php` and set `'root'` to the absolute path of `~/refmap`. The database then cannot be downloaded at all.
 
@@ -68,8 +70,8 @@ No config file is needed (it is auto-detected). The `.htaccess` files deny web a
 ### Then, for either layout
 
 1. Make `data/` writable by the web server user; `searches.sqlite` is created there on the first logged search. If it is not writable the app still works, but searches are not counted.
-2. Verify: load `/RefMap/`; open `/RefMap/api/refs.php?v=John.3.16` (JSON); search for something and confirm `data/searches.sqlite` appears; and, in the fallback layout, confirm `/RefMap/data/refs.sqlite` is **not** downloadable (expect 403 or 404).
-3. Updating later: re-upload the changed files from `public/`. If you rebuild the database, replace only `refs.sqlite` and leave `searches.sqlite` alone, since it holds your counts.
+2. Verify: load `/RefMap/` (with the browser console open, check for no CSP errors and that both downloads work); open `/RefMap/api/refs.php?v=John.3.16` (JSON); search for something and confirm `data/searches.sqlite` appears; and, in the fallback layout, confirm `/RefMap/data/refs.sqlite` is **not** downloadable (expect 403 or 404).
+3. Updating later: re-upload the changed files from `public/`. If you rebuild the database, replace only `refs.sqlite` and leave `searches.sqlite` alone, since it holds your counts. A database built before the `meta` table existed still works, but its incoming-reference lookups are slower, so rebuild and re-upload it.
 
 Location lookup order (see `public/api/paths.php`): `api/config.local.php` (`root`, `data_dir`), then the `REFMAP_ROOT` / `REFMAP_DATA_DIR` environment variables, then auto-detection.
 

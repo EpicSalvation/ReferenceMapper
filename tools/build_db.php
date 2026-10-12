@@ -65,6 +65,9 @@ function buildDb(string $src, string $out): array
     $pdo->commit();
     $pdo->exec('CREATE INDEX idx_from ON refs (from_id, votes DESC)');
     $pdo->exec('CREATE INDEX idx_to ON refs (to_start, to_end)');
+    // The widest range lets the API bound its incoming-reference index scan.
+    $pdo->exec('CREATE TABLE meta (key TEXT PRIMARY KEY, value INTEGER NOT NULL)');
+    $pdo->exec("INSERT INTO meta (key, value) SELECT 'max_span', COALESCE(MAX(to_end - to_start), 0) FROM refs");
     return $report;
 }
 

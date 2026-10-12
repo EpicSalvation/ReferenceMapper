@@ -1,0 +1,9 @@
+# Security headers (Apache with mod_headers). On other servers, set the same headers in their config.
+# style-src needs 'unsafe-inline' for the SVG style attributes set by js/render.js;
+# img-src needs blob: for the PNG export (js/export.js).
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "DENY"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
+</IfModule>

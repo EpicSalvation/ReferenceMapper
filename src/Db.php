@@ -17,7 +17,8 @@ final class Db
     {
         $pdo = new PDO('sqlite:' . dataDir() . '/searches.sqlite');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $pdo->exec('PRAGMA busy_timeout = 2000');
+        // Short wait: counting is best-effort, so under contention drop the write rather than hold the request.
+        $pdo->exec('PRAGMA busy_timeout = 200');
         self::initSearches($pdo);
         return $pdo;
     }

@@ -6,6 +6,17 @@ require_once __DIR__ . '/paths.php';
 const REFS_DEFAULT_LIMIT = 150;
 const REFS_MAX_LIMIT = 500;
 
+/** Widest to_end - to_start in the refs table, or null for a database built before the meta table existed. */
+function maxSpan(PDO $refs): ?int
+{
+    try {
+        $span = $refs->query("SELECT value FROM meta WHERE key = 'max_span'")->fetchColumn();
+    } catch (PDOException $e) {
+        return null;
+    }
+    return $span === false ? null : (int) $span;
+}
+
 /**
  * Looks up the cross references to and from one verse.
  *
@@ -24,8 +35,15 @@ function handleRefs(array $query, PDO $refs, ?PDO $searches): array
 
     $out = $refs->prepare('SELECT to_start, to_end, votes FROM refs WHERE from_id = ? AND votes >= ? ORDER BY votes DESC, to_start LIMIT ?');
     $out->execute([$v, $min, $limit]);
-    $in = $refs->prepare('SELECT from_id, votes FROM refs WHERE to_start <= ? AND to_end >= ? AND votes >= ? ORDER BY votes DESC, from_id LIMIT ?');
-    $in->execute([$v, $v, $min, $limit]);
+    $span = maxSpan($refs);
+    if ($span !== null) {
+        // No range is wider than $span, so only rows starting in [v - span, v] can contain v.
+        $in = $refs->prepare('SELECT from_id, votes FROM refs WHERE to_start BETWEEN ? AND ? AND to_end >= ? AND votes >= ? ORDER BY votes DESC, from_id LIMIT ?');
+        $in->execute([$v - $span, $v, $v, $min, $limit]);
+    } else {
+        $in = $refs->prepare('SELECT from_id, votes FROM refs WHERE to_start <= ? AND to_end >= ? AND votes >= ? ORDER BY votes DESC, from_id LIMIT ?');
+        $in->execute([$v, $v, $min, $limit]);
+    }
 
     $log = ($query['log'] ?? '') === '1' && $searches !== null;
     if ($log) {
@@ -52,6 +70,7 @@ function handleRefs(array $query, PDO $refs, ?PDO $searches): array
 if (PHP_SAPI !== 'cli' && isset($_SERVER['SCRIPT_FILENAME']) && realpath($_SERVER['SCRIPT_FILENAME']) === realpath(__FILE__)) {
     ini_set('display_errors', '0');
     header('Content-Type: application/json');
+    header('X-Content-Type-Options: nosniff');
     try {
         $configFile = __DIR__ . '/config.local.php';
         $config = is_file($configFile) ? require $configFile : [];

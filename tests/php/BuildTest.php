@@ -33,6 +33,11 @@ return [
         $row = $pdo->query("SELECT to_start, to_end FROM refs WHERE from_id = " . Verses::idFromRef('Ps.1.1'))->fetch(PDO::FETCH_ASSOC);
         assertSame(8, (int) $row['to_end'] - (int) $row['to_start']);
     },
+    'meta records the widest range' => function () {
+        [$r, $db] = buildFixture();
+        $pdo = new PDO('sqlite:' . $db);
+        assertSame(8, (int) $pdo->query("SELECT value FROM meta WHERE key = 'max_span'")->fetchColumn());
+    },
     'both indexes exist' => function () {
         [$r, $db] = buildFixture();
         $pdo = new PDO('sqlite:' . $db);
