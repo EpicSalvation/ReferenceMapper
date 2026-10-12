@@ -33,21 +33,21 @@ const apexY = (d) => {
 };
 
 test('arcPath out goes above the baseline and in goes below', () => {
-  const out = arcPath(100, 300, 200, 'out', 150);
-  const inn = arcPath(100, 300, 200, 'in', 150);
-  assert.match(out, /A\s*100[ ,]100\s0\s0\s1\s/);
-  assert.match(inn, /A\s*100[ ,]100\s0\s0\s0\s/);
-  assert.equal(apexY(out).ry, 100);
+  const out = arcPath(100, 300, 200, 'out', 0.35);
+  const inn = arcPath(100, 300, 200, 'in', 0.35);
+  assert.match(out, /A\s*100[ ,]35\s0\s0\s1\s/);
+  assert.match(inn, /A\s*100[ ,]35\s0\s0\s0\s/);
+  assert.equal(apexY(out).ry, 35);
 });
 
-test('arcPath caps height at maxHeight and tolerates reversed endpoints', () => {
-  const d = arcPath(900, 100, 200, 'out', 80);
-  assert.equal(apexY(d).ry, 80);
+test('arcPath tolerates reversed endpoints', () => {
+  const d = arcPath(900, 100, 200, 'out', 0.35);
+  assert.equal(apexY(d).ry, 140);
   assert.ok(d.startsWith('M 100 200'), d);
 });
 
 test('arcPath of a zero-length span is still visible', () => {
-  const d = arcPath(500, 500, 200, 'out', 150);
+  const d = arcPath(500, 500, 200, 'out', 0.35);
   assert.ok(apexY(d).ry >= 6, d);
   assert.ok(!/NaN/.test(d));
 });
@@ -92,9 +92,30 @@ test('selectLabels handles 500 arcs quickly', () => {
   assert.ok(performance.now() - t < 50);
 });
 
-import { arcHeight } from '../../public/js/layout.js';
-test('arcHeight matches the height used by arcPath', () => {
-  assert.equal(arcHeight(100, 300, 150), 100);
-  assert.equal(arcHeight(900, 100, 80), 80);
-  assert.ok(arcHeight(500, 500, 150) >= 6);
+import { arcHeight, arcRatio, maxArcHeight } from '../../public/js/layout.js';
+test('arcHeight is proportional to span with no cap', () => {
+  assert.equal(arcHeight(100, 300, 0.35), 35);
+  assert.equal(arcHeight(100, 500, 0.35), 70);
+  assert.equal(arcHeight(0, 1000, 0.35), 175);
+  assert.ok(arcHeight(500, 500, 0.35) >= 6);
+});
+
+test('arcs from one verse keep one aspect ratio, so they nest instead of crossing', () => {
+  const ratio = arcRatio(false);
+  const x1 = 700;
+  for (const x2 of [760, 900, 1100, 1146, 400, 100, 2]) {
+    const rx = Math.abs(x2 - x1) / 2;
+    assert.ok(Math.abs(arcHeight(x1, x2, ratio) / rx - ratio) < 1e-9, `x2 ${x2}`);
+  }
+});
+
+test('arcRatio is flattened everywhere, a bit taller on narrow screens', () => {
+  assert.equal(arcRatio(false), 0.35);
+  assert.ok(arcRatio(true) > arcRatio(false) && arcRatio(true) < 1);
+});
+
+test('maxArcHeight is the height of the farthest possible arc from a verse', () => {
+  assert.equal(maxArcHeight(0, 1000, 0.35), 175);
+  assert.equal(maxArcHeight(1000, 1000, 0.35), 175);
+  assert.equal(maxArcHeight(500, 1000, 0.35), 87.5);
 });

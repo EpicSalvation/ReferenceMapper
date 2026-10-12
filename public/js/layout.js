@@ -15,18 +15,29 @@ export function xForId(verses, id, width) {
   return ((id - 0.5) / verses.total) * width;
 }
 
-// Height of the half-ellipse spanning x1..x2 (a semicircle, capped at maxHeight).
-export function arcHeight(x1, x2, maxHeight) {
-  const rx = Math.max(3, Math.abs(x2 - x1) / 2);
-  return Math.min(maxHeight, Math.max(6, rx));
+// Every arc is a deliberately flattened half-ellipse: height = ratio * half-span.
+// One shared ratio means arcs from the same verse are scaled copies of each other,
+// so they nest and never cross, however far apart the references are.
+export function arcRatio(narrow) {
+  return narrow ? 0.5 : 0.35;
+}
+
+// Height of the half-ellipse spanning x1..x2 (proportional to the span, no cap).
+export function arcHeight(x1, x2, ratio) {
+  return Math.max(6, (Math.abs(x2 - x1) / 2) * ratio);
+}
+
+// Height of the farthest arc a verse at x could have; sizes the drawing area.
+export function maxArcHeight(x, width, ratio) {
+  return arcHeight(0, Math.max(x, width - x), ratio);
 }
 
 // Half-ellipse above ('out') or below ('in') the baseline.
-export function arcPath(x1, x2, baseY, direction, maxHeight) {
+export function arcPath(x1, x2, baseY, direction, ratio) {
   let a = Math.min(x1, x2), b = Math.max(x1, x2);
   if (b - a < 6) { const mid = (a + b) / 2; a = mid - 3; b = mid + 3; }
   const rx = (b - a) / 2;
-  const ry = arcHeight(a, b, maxHeight);
+  const ry = arcHeight(a, b, ratio);
   const sweep = direction === 'out' ? 1 : 0;
   return `M ${num(a)} ${num(baseY)} A ${num(rx)} ${num(ry)} 0 0 ${sweep} ${num(b)} ${num(baseY)}`;
 }

@@ -1,5 +1,5 @@
 // Builds the arc-diagram SVG. Colors come from CSS custom properties (see style.css).
-import { layoutBar, xForId, arcPath, arcHeight, arcStyle, selectLabels } from './layout.js';
+import { layoutBar, xForId, arcPath, arcHeight, arcRatio, maxArcHeight, arcStyle, selectLabels } from './layout.js';
 
 const NS = 'http://www.w3.org/2000/svg';
 export const BAR_HEIGHT = 26;
@@ -17,7 +17,9 @@ function el(name, attrs = {}, text) {
  */
 export function renderDiagram(svg, state) {
   const { verses, verseId, connections, width, narrow, selectedIndex, showOut, showIn } = state;
-  const maxH = narrow ? 130 : 200;
+  const x1 = xForId(verses, verseId, width);
+  const ratio = arcRatio(narrow);
+  const maxH = Math.ceil(maxArcHeight(x1, width, ratio));
   const labelPad = narrow ? 8 : 22;
   const topH = showOut ? maxH + labelPad : 8;
   const bottomH = showIn ? maxH + labelPad : 8;
@@ -43,14 +45,13 @@ export function renderDiagram(svg, state) {
   }
   svg.append(bar);
 
-  const x1 = xForId(verses, verseId, width);
   const slot = width / verses.total;
   const maxVotes = connections.reduce((m, c) => Math.max(m, c.votes), 0);
 
   // Geometry per connection
   const geo = connections.map((c) => {
     const tx = xForId(verses, (c.start + c.end) / 2, width);
-    const ry = arcHeight(x1, tx, maxH);
+    const ry = arcHeight(x1, tx, ratio);
     const group = verses.books[verses.bookIndexOf(c.start)].group;
     return { tx, ry, group };
   });
@@ -66,7 +67,7 @@ export function renderDiagram(svg, state) {
     const c = connections[i];
     const g0 = geo[i];
     const baseY = c.dir === 'out' ? barTop : barBottom;
-    const d = arcPath(x1, g0.tx, baseY, c.dir, maxH);
+    const d = arcPath(x1, g0.tx, baseY, c.dir, ratio);
     const style = arcStyle(c.votes, maxVotes);
     const selected = i === selectedIndex;
     const g = el('g', { 'data-arc': i, class: `arc ${c.dir}${selected ? ' selected' : ''}` });
