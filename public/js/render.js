@@ -1,5 +1,5 @@
 // Builds the arc-diagram SVG. Colors come from CSS custom properties (see style.css).
-import { layoutBar, xForId, arcPath, arcHeight, arcRatio, maxArcHeight, arcStyle, selectLabels } from './layout.js';
+import { layoutBar, xForId, arcPath, arcHeight, arcRatio, maxArcHeight, arcStyle, selectLabels, zoneLabel } from './layout.js';
 
 const NS = 'http://www.w3.org/2000/svg';
 export const BAR_HEIGHT = 26;
@@ -20,7 +20,7 @@ export function renderDiagram(svg, state) {
   const x1 = xForId(verses, verseId, width);
   const ratio = arcRatio(narrow);
   const maxH = Math.ceil(maxArcHeight(x1, width, ratio));
-  const labelPad = narrow ? 8 : 22;
+  const labelPad = narrow ? 28 : 38; // room for the zone label (and arc labels on wide screens)
   const topH = showOut ? maxH + labelPad : 8;
   const bottomH = showIn ? maxH + labelPad : 8;
   const barTop = topH;
@@ -31,6 +31,15 @@ export function renderDiagram(svg, state) {
   svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
   svg.setAttribute('width', width);
   svg.setAttribute('height', height);
+
+  const outCount = connections.filter((c) => c.dir === 'out').length;
+  const inCount = connections.length - outCount;
+  const here = verses.label(verseId);
+  svg.setAttribute('aria-label', `Arc diagram for ${here}: ${showOut ? outCount : 0} outgoing references above the bar and ${showIn ? inCount : 0} incoming references below it`);
+
+  // Tinted zones: outgoing above the bar, incoming below
+  if (showOut) svg.append(el('rect', { x: 0, y: 0, width, height: barTop, class: 'zone zone-out' }));
+  if (showIn) svg.append(el('rect', { x: 0, y: barBottom, width, height: height - barBottom, class: 'zone zone-in' }));
 
   // Bar of books
   const bar = el('g', { class: 'bar' });
@@ -74,7 +83,7 @@ export function renderDiagram(svg, state) {
     g.append(el('title', {}, `${c.label} · ${c.votes} votes`));
     g.append(el('path', {
       d, class: 'arc-line', fill: 'none',
-      style: `stroke:var(--c-${g0.group});stroke-width:${selected ? style.strokeWidth + 2 : style.strokeWidth};stroke-opacity:${selected ? 1 : style.opacity}`,
+      style: `${c.dir === 'in' ? 'stroke-dasharray:7 4;' : ''}stroke:var(--c-${g0.group});stroke-width:${selected ? style.strokeWidth + 2 : style.strokeWidth};stroke-opacity:${selected ? 1 : style.opacity}`,
     }));
     g.append(el('path', { d, class: 'arc-hit', fill: 'none' }));
     // landing mark (band for a range, dot for a single verse)
@@ -111,4 +120,8 @@ export function renderDiagram(svg, state) {
     }
     svg.append(labels);
   }
+
+  // Zone labels (real text, so direction never depends on color alone)
+  if (showOut) svg.append(el('text', { x: 10, y: 17, class: 'zone-label' }, zoneLabel('out', here, outCount)));
+  if (showIn) svg.append(el('text', { x: 10, y: height - 9, class: 'zone-label' }, zoneLabel('in', here, inCount)));
 }

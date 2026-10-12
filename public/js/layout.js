@@ -62,3 +62,15 @@ export function selectLabels(arcs, { maxLabels, minGap, labelWidth, labelHeight 
   }
   return chosen;
 }
+
+// Text for the labelled zones above (outgoing) and below (incoming) the book bar.
+export function zoneLabel(direction, verseLabel, count) {
+  return `References ${direction === 'out' ? 'from' : 'to'} ${verseLabel} (${count})`;
+}
+
+// Non-color direction cue for list rows: a short visible badge plus a full phrase for screen readers.
+export function directionInfo(direction) {
+  return direction === 'out'
+    ? { badge: 'From', sr: 'Outgoing reference' }
+    : { badge: 'To', sr: 'Incoming reference' };
+}

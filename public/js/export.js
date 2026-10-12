@@ -26,7 +26,7 @@ export function buildStandaloneSvgString(innerMarkup, { title, width, height, ba
 }
 
 const STYLE_PROPS = [
-  'fill', 'fill-opacity', 'stroke', 'stroke-width', 'stroke-opacity', 'stroke-linejoin',
+  'fill', 'fill-opacity', 'stroke', 'stroke-width', 'stroke-opacity', 'stroke-linejoin', 'stroke-dasharray',
   'opacity', 'font-family', 'font-size', 'font-weight', 'text-anchor', 'paint-order',
 ];
 

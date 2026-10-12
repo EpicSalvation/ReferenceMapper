@@ -119,3 +119,15 @@ test('maxArcHeight is the height of the farthest possible arc from a verse', () 
   assert.equal(maxArcHeight(1000, 1000, 0.35), 175);
   assert.equal(maxArcHeight(500, 1000, 0.35), 87.5);
 });
+
+import { zoneLabel, directionInfo } from '../../public/js/layout.js';
+test('zoneLabel describes each zone with the verse and its count', () => {
+  assert.equal(zoneLabel('out', 'John 3:16', 61), 'References from John 3:16 (61)');
+  assert.equal(zoneLabel('in', 'John 3:16', 35), 'References to John 3:16 (35)');
+  assert.equal(zoneLabel('in', 'Jude 1:5', 0), 'References to Jude 1:5 (0)');
+});
+
+test('directionInfo gives a visible badge and a full screen-reader phrase', () => {
+  assert.deepEqual(directionInfo('out'), { badge: 'From', sr: 'Outgoing reference' });
+  assert.deepEqual(directionInfo('in'), { badge: 'To', sr: 'Incoming reference' });
+});

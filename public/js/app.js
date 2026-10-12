@@ -1,6 +1,7 @@
 import { createVerses } from './verses.js';
 import { parseReference, decodeHash } from './parse.js';
 import { renderDiagram } from './render.js';
+import { directionInfo } from './layout.js';
 import { downloadPng, downloadSvg, exportFilename } from './export.js';
 
 const $ = (id) => document.getElementById(id);
@@ -79,11 +80,15 @@ function renderList(conns) {
     b.dataset.key = keyOf(c);
     if (keyOf(c) === state.selectedKey) b.setAttribute('aria-current', 'true');
     const left = document.createElement('span');
-    const dir = document.createElement('span');
-    dir.className = 'dir';
-    dir.textContent = c.dir === 'out' ? '↑' : '↓';
-    dir.title = c.dir === 'out' ? 'Referenced from this verse' : 'References this verse';
-    left.append(dir, c.label);
+    const info = directionInfo(c.dir);
+    const badge = document.createElement('span');
+    badge.className = `badge badge-${c.dir}`;
+    badge.setAttribute('aria-hidden', 'true');
+    badge.textContent = info.badge;
+    const sr = document.createElement('span');
+    sr.className = 'sr-only';
+    sr.textContent = `${info.sr}: `;
+    left.append(badge, sr, c.label);
     const votes = document.createElement('span');
     votes.className = 'votes';
     votes.textContent = `${c.votes} votes`;

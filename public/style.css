@@ -7,6 +7,8 @@
   --accent: #2f5d9e;
   --error: #b3261e;
   --bar-sep: #fbfaf7;
+  --zone-out: rgba(60, 110, 200, 0.07);
+  --zone-in: rgba(220, 140, 40, 0.10);
   --c-Law: #b5651d;
   --c-History: #8a6d1d;
   --c-Wisdom: #2e8b6f;
@@ -27,6 +29,8 @@
     --accent: #7fb0f0;
     --error: #ff8a80;
     --bar-sep: #14161a;
+    --zone-out: rgba(110, 160, 255, 0.11);
+    --zone-in: rgba(255, 170, 70, 0.11);
     --c-Law: #e08a3c;
     --c-History: #d1b04a;
     --c-Wisdom: #4fc4a0;
@@ -101,6 +105,9 @@ button.secondary { background: transparent; color: var(--accent); }
 .arc-hit { stroke: transparent; stroke-width: 14; pointer-events: stroke; cursor: pointer; }
 .arc-line { pointer-events: none; fill: none; }
 .arc:hover .arc-line { stroke-opacity: 1 !important; }
+.zone-out { fill: var(--zone-out); }
+.zone-in { fill: var(--zone-in); }
+.zone-label { font: 600 12px system-ui, sans-serif; fill: var(--fg); paint-order: stroke; stroke: var(--panel); stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
 .marker line { stroke: var(--fg); stroke-width: 2; }
 .marker circle { fill: var(--fg); stroke: var(--panel); stroke-width: 2; }
 .arc-label { font: 11px system-ui, sans-serif; fill: var(--fg); paint-order: stroke; stroke: var(--panel); stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
@@ -121,7 +128,10 @@ button.secondary { background: transparent; color: var(--accent); }
 }
 .connections button[aria-current="true"] { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent) inset; }
 .connections .votes { color: var(--muted); white-space: nowrap; }
-.connections .dir { color: var(--muted); margin-right: 6px; }
+.badge { display: inline-block; min-width: 3.1em; text-align: center; font-size: 0.72rem; font-weight: 600; line-height: 1.4; padding: 0 6px; margin-right: 8px; border: 1.5px solid var(--fg); border-radius: 4px; color: var(--fg); }
+.badge-out { background: var(--zone-out); border-style: solid; }
+.badge-in { background: var(--zone-in); border-style: dashed; }
+.list-key { margin: 0 0 8px; font-size: 0.85rem; color: var(--muted); }
 
 footer { padding-top: 24px; padding-bottom: 28px; color: var(--muted); font-size: 0.85rem; }
 
