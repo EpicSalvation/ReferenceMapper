@@ -3,6 +3,10 @@ import { layoutLegend } from './layout.js';
 // Client-side image export: standalone SVG and PNG. Nothing is sent to the server.
 
 export const ATTRIBUTION = 'Cross-reference data: openbible.info (CC-BY)';
+const LINE_KEY = [
+  { text: 'Solid: references from this verse', dashed: false },
+  { text: 'Dashed: references to this verse', dashed: true },
+];
 const HEADER = 38;
 const FOOTER = 26;
 
@@ -16,7 +20,10 @@ export function exportFilename(ref, ext) {
 /** Wraps already-inlined diagram markup with a title, attribution and background. */
 export function buildStandaloneSvgString(innerMarkup, { title, width, height, background, color, legend = [] }) {
   const key = layoutLegend(legend, width);
-  const keyHeight = key.rows ? key.height + 10 : 0;
+  // Line-style key (not color-dependent): solid = outgoing, dashed = incoming. Shown with the color key.
+  const lineKey = key.rows ? layoutLegend(LINE_KEY.map((l) => l.text), width, { swatch: 30 }) : { items: [], height: 0 };
+  const lineKeyY = key.height + 4;
+  const keyHeight = key.rows ? key.height + 4 + lineKey.height + 10 : 0;
   const total = height + HEADER + keyHeight + FOOTER;
   const font = 'font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif"';
   return [
@@ -24,7 +31,7 @@ export function buildStandaloneSvgString(innerMarkup, { title, width, height, ba
     `<rect width="${width}" height="${total}" fill="${escapeXml(background)}"/>`,
     `<text x="14" y="26" ${font} font-size="18" font-weight="700" fill="${escapeXml(color)}">${escapeXml(title)}</text>`,
     `<g transform="translate(0 ${HEADER})">${innerMarkup}</g>`,
-    key.rows ? `<g transform="translate(0 ${HEADER + height + 8})">${key.items.map((it, i) => `<rect x="${it.x}" y="${it.y + 2}" width="10" height="10" rx="2" fill="${escapeXml(legend[i].color)}"/><text x="${it.x + 16}" y="${it.y + 11}" ${font} font-size="12" fill="${escapeXml(color)}">${escapeXml(it.name)}</text>`).join('')}</g>` : '',
+    key.rows ? `<g transform="translate(0 ${HEADER + height + 8})">${key.items.map((it, i) => `<rect x="${it.x}" y="${it.y + 2}" width="10" height="10" rx="2" fill="${escapeXml(legend[i].color)}"/><text x="${it.x + 16}" y="${it.y + 11}" ${font} font-size="12" fill="${escapeXml(color)}">${escapeXml(it.name)}</text>`).join('')}${lineKey.items.map((it, i) => `<line x1="${it.x}" y1="${lineKeyY + it.y + 7}" x2="${it.x + 30}" y2="${lineKeyY + it.y + 7}" stroke="${escapeXml(color)}" stroke-width="2"${LINE_KEY[i].dashed ? ' stroke-dasharray="7 4"' : ''}/><text x="${it.x + 36}" y="${lineKeyY + it.y + 11}" ${font} font-size="12" fill="${escapeXml(color)}">${escapeXml(it.name)}</text>`).join('')}</g>` : '',
     `<text x="14" y="${total - 9}" ${font} font-size="11" fill="${escapeXml(color)}" fill-opacity="0.7">${escapeXml(ATTRIBUTION)}</text>`,
     '</svg>',
   ].join('');

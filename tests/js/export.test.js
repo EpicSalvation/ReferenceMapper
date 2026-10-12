@@ -53,3 +53,21 @@ test('no legend means no key and the same size as before', () => {
   const same = buildStandaloneSvgString('<g/>', { ...opts, legend: [] });
   assert.equal(heightOf(same), heightOf(svg));
 });
+
+test('key also explains line style: solid for outgoing, dashed for incoming', () => {
+  assert.ok(withKey.includes('Solid: references from this verse'));
+  assert.ok(withKey.includes('Dashed: references to this verse'));
+  assert.equal((withKey.match(/stroke-dasharray="/g) || []).length, 1, 'exactly one dashed sample line');
+});
+
+test('line-style key wraps on narrow images and stays inside the width', () => {
+  const wide = buildStandaloneSvgString('<g/>', { ...opts, width: 1200, legend });
+  const narrow = buildStandaloneSvgString('<g/>', { ...opts, width: 300, legend });
+  assert.ok(heightOf(narrow) > heightOf(wide));
+  for (const m of narrow.matchAll(/<line x1="([\d.]+)" y1="[\d.]+" x2="([\d.]+)"/g)) assert.ok(+m[2] <= 300, `line ends at ${m[2]}`);
+});
+
+test('no legend means no line-style key either', () => {
+  const none = buildStandaloneSvgString('<g/>', { ...opts, legend: [] });
+  assert.ok(!none.includes('Solid:') && !none.includes('Dashed:'));
+});

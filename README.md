@@ -11,7 +11,7 @@ Web-based Bible cross-reference visualizer. Pick a verse (menus or type "John 3:
 
 ## Styles
 
-The diagram has two looks: **Light** (default; thin book bar, fine faint arcs) and **Bold** (a chunky bar and heavy arcs, handy for slides). Switch with the Style menu, or share a link with `?style=bold` / `?style=light` (for example `https://example.com/?style=bold#John.3.16`). A link parameter wins over the browser's saved choice, which wins over the default. PNG/SVG downloads use whichever style is on screen and include a color key for the book groups. A tick on the book bar marks the Old/New Testament boundary. The numbers for each style live in `STYLES` in `public/js/layout.js`.
+The diagram has two looks: **Light** (default; thin book bar, fine faint arcs) and **Bold** (a chunky bar and heavy arcs, handy for slides). Switch with the Style menu, or share a link with `?style=bold` / `?style=light` (for example `https://example.com/?style=bold#John.3.16`). A link parameter wins over the browser's saved choice, which wins over the default. PNG/SVG downloads use whichever style is on screen and include a key for the book-group colors and for solid (outgoing) vs dashed (incoming) arcs. A tick on the book bar marks the Old/New Testament boundary. The numbers for each style live in `STYLES` in `public/js/layout.js`.
 
 ## Local development
 
